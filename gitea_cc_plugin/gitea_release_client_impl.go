@@ -64,8 +64,8 @@ func (r *releaseClient) BuildRelease() (*gitea.Release, error) {
 	}
 
 	if r.dryRun {
-		wd_log.Infof("try to create release %s/%s\n", r.owner, r.repo)
-		wd_log.Infof("dry run, not creating release\n")
+		wd_log.Infof("~> dry run mode open, not creating release\n")
+		wd_log.Infof("-> try to create release %s/%s/%s\n", r.url, r.owner, r.repo)
 		return &gitea.Release{
 			ID: -1,
 		}, nil
@@ -98,7 +98,7 @@ func (r *releaseClient) UploadFiles(releaseID int64) error {
 		for _, filePath := range r.uploadFilePaths {
 			wd_log.Infof("-> try upload file: %s\n", filePath)
 		}
-		wd_log.Infof("dry run, not uploading files\n")
+		wd_log.Infof("~> dry run, not uploading files\n")
 		return nil
 	}
 
