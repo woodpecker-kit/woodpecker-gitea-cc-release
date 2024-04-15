@@ -16,7 +16,7 @@ import (
 	"os/user"
 )
 
-var wdPlugin *gitea_cc_plugin.Plugin
+var wdPlugin *gitea_cc_plugin.GiteaCCRelease
 
 // GlobalBeforeAction
 // do command Action before flag global.

@@ -7,6 +7,7 @@ import (
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_short_info"
+	"path/filepath"
 )
 
 const (
@@ -31,25 +32,29 @@ const (
 	CliNameGiteaReleaseFilesGlobs = "settings.gitea-release-files-globs"
 	EnvGiteaReleaseFilesGlobs     = "PLUGIN_GITEA_RELEASE_FILES_GLOBS"
 
+	CliNameGiteaReleaseFileRootPath = "settings.gitea-release-file-root-path"
+	EnvGiteaReleaseFileRootPath     = "PLUGIN_GITEA_RELEASE_FILE_ROOT_PATH"
+
 	CliNameGiteaReleaseFileExistsDo = "settings.gitea-release-file-exists-do"
 	EnvGiteaReleaseFileExistsDo     = "PLUGIN_GITEA_RELEASE_FILE_EXISTS_DO"
 
 	CliNameGiteaFilesChecksum = "settings.gitea-files-checksum"
 	EnvGiteaFilesChecksum     = "PLUGIN_GITEA_FILES_CHECKSUM"
 
-	// remove or change this code
+	CliNameGiteaReleaseTitle = "settings.gitea-release-title"
+	EnvGiteaReleaseTitle     = "PLUGIN_GITEA_RELEASE_TITLE"
 
-	CliNameNotEmptyEnvs = "settings.not-empty-envs"
-	EnvNotEmptyEnvs     = "PLUGIN_NOT_EMPTY_ENVS"
+	CliNameGiteaReleaseNote = "settings.gitea-release-note"
+	EnvGiteaReleaseNote     = "PLUGIN_GITEA_RELEASE_NOTE"
 
-	CliNamePrinterPrintKeys = "settings.env-printer-print-keys"
-	EnvPrinterPrintKeys     = "PLUGIN_ENV_PRINTER_PRINT_KEYS"
+	CliNameGiteaReleaseNoteByConventionChange = "settings.gitea-release-note-by-convention-change"
+	EnvGiteaReleaseNoteByConventionChange     = "PLUGIN_GITEA_RELEASE_NOTE_BY_CONVENTION_CHANGE"
 
-	CliNamePrinterPaddingLeftMax = "settings.env-printer-padding-left-max"
-	EnvPrinterPaddingLeftMax     = "PLUGIN_ENV_PRINTER_PADDING_LEFT_MAX"
+	CliNameGiteaReleaseReadChangeLogFile = "settings.gitea-release-read-change-log-file"
+	EnvGiteaReleaseReadChangeLogFile     = "PLUGIN_GITEA_RELEASE_READ_CHANGE_LOG_FILE"
 
-	CliNameStepsTransferDemo = "settings.steps-transfer-demo"
-	EnvStepsTransferDemo     = "PLUGIN_STEPS_TRANSFER_DEMO"
+	CliNameGiteaTimeoutSecond = "settings.gitea-timeout-second"
+	EnvGiteaTimeoutSecond     = "PLUGIN_GITEA_TIMEOUT_SECOND"
 )
 
 // GlobalFlag
@@ -64,13 +69,13 @@ func GlobalFlag() []cli.Flag {
 		},
 		&cli.BoolFlag{
 			Name:    CliNameGiteaDraft,
-			Usage:   "gitea release draft",
+			Usage:   "gitea release setting: type draft",
 			Value:   false,
 			EnvVars: []string{EnvGiteaDraft},
 		},
 		&cli.BoolFlag{
 			Name:    CliNameGiteaPrerelease,
-			Usage:   "gitea release type prerelease",
+			Usage:   "gitea release setting: type prerelease",
 			Value:   true,
 			EnvVars: []string{EnvGiteaPrerelease},
 		},
@@ -98,8 +103,13 @@ func GlobalFlag() []cli.Flag {
 			EnvVars: []string{EnvGiteaReleaseFilesGlobs},
 		},
 		&cli.StringFlag{
+			Name:    CliNameGiteaReleaseFileRootPath,
+			Usage:   "release file root path, if empty will use workspace, most of use project root path",
+			EnvVars: []string{EnvGiteaReleaseFileRootPath},
+		},
+		&cli.StringFlag{
 			Name:    CliNameGiteaReleaseFileExistsDo,
-			Usage:   fmt.Sprintf("what to do if release file already exist support: %v", supportFileExistsDoList),
+			Usage:   fmt.Sprintf("do if release update file already exist, support: %v", supportFileExistsDoList),
 			Value:   FileExistsDoFail,
 			EnvVars: []string{EnvGiteaReleaseFileExistsDo},
 		},
@@ -108,11 +118,42 @@ func GlobalFlag() []cli.Flag {
 			Usage:   fmt.Sprintf("generate specific checksums, empty will skip, support: %v", CheckSumSupport),
 			EnvVars: []string{EnvGiteaFilesChecksum},
 		},
+
+		// release info
+		&cli.StringFlag{
+			Name:    CliNameGiteaReleaseTitle,
+			Usage:   "release title, if empty will use tag, can be cover by tag name of convention change log",
+			EnvVars: []string{EnvGiteaReleaseTitle},
+		},
+		&cli.StringFlag{
+			Name:    CliNameGiteaReleaseNote,
+			Usage:   "release note, can be cover by tag name of convention change log",
+			EnvVars: []string{EnvGiteaReleaseNote},
+		},
+		&cli.BoolFlag{
+			Name:    CliNameGiteaReleaseNoteByConventionChange,
+			Usage:   fmt.Sprintf("release note by convention change, if true will read change log file, and cover flag %s", CliNameGiteaReleaseNote),
+			EnvVars: []string{EnvGiteaReleaseNoteByConventionChange},
+		},
+		&cli.StringFlag{
+			Name:    CliNameGiteaReleaseReadChangeLogFile,
+			Usage:   fmt.Sprintf("release read change log file, if empty will use default %s", versionConventionChangeLogFileName),
+			Value:   versionConventionChangeLogFileName,
+			EnvVars: []string{EnvGiteaReleaseReadChangeLogFile},
+		},
 	}
 }
 
 func HideGlobalFlag() []cli.Flag {
-	return []cli.Flag{}
+	return []cli.Flag{
+		&cli.UintFlag{
+			Name:    CliNameGiteaTimeoutSecond,
+			Usage:   "gitea release timeout second, default 60, less 30",
+			Value:   60,
+			Hidden:  true,
+			EnvVars: []string{EnvGiteaTimeoutSecond},
+		},
+	}
 }
 
 func BindCliFlags(c *cli.Context,
@@ -121,7 +162,18 @@ func BindCliFlags(c *cli.Context,
 	wdInfo *wd_info.WoodpeckerInfo,
 	rootPath,
 	stepsTransferPath string, stepsOutDisable bool,
-) (*Plugin, error) {
+) (*GiteaCCRelease, error) {
+
+	releaseFileRootPath := c.String(CliNameGiteaReleaseFileRootPath)
+	if releaseFileRootPath == "" {
+		releaseFileRootPath = rootPath
+	}
+
+	readCCLogFileName := c.String(CliNameGiteaReleaseReadChangeLogFile)
+	if readCCLogFileName == "" { // empty will use default
+		readCCLogFileName = versionConventionChangeLogFileName
+	}
+	changeLogFullPath := filepath.Join(rootPath, readCCLogFileName)
 
 	config := Settings{
 		Debug:             debug,
@@ -137,9 +189,15 @@ func BindCliFlags(c *cli.Context,
 		GiteaInsecure:   c.Bool(CliNameGiteaInsecure),
 		GiteaApiKey:     c.String(CliNameGiteaApiKey),
 
-		GiteaReleaseFilesGlobs:   c.StringSlice(CliNameGiteaReleaseFilesGlobs),
-		GiteaReleaseFileExistsDo: c.String(CliNameGiteaReleaseFileExistsDo),
-		GiteaFilesChecksum:       c.StringSlice(CliNameGiteaFilesChecksum),
+		GiteaReleaseFilesGlobs:       c.StringSlice(CliNameGiteaReleaseFilesGlobs),
+		GiteaReleaseFileGlobRootPath: releaseFileRootPath,
+		GiteaReleaseFileExistsDo:     c.String(CliNameGiteaReleaseFileExistsDo),
+		GiteaFilesChecksum:           c.StringSlice(CliNameGiteaFilesChecksum),
+
+		GiteaReleaseTitle:                  c.String(CliNameGiteaReleaseTitle),
+		GiteaReleaseNote:                   c.String(CliNameGiteaReleaseNote),
+		GiteaReleaseNoteByConventionChange: c.Bool(CliNameGiteaReleaseNoteByConventionChange),
+		GiteaReleaseConventionReadPath:     changeLogFullPath,
 	}
 
 	// set default TimeoutSecond
@@ -147,11 +205,15 @@ func BindCliFlags(c *cli.Context,
 		config.TimeoutSecond = 10
 	}
 
+	if config.GiteaTimeoutSecond < 30 {
+		config.GiteaTimeoutSecond = 30
+	}
+
 	wd_log.Debugf("args %s: %v", wd_flag.NameCliPluginTimeoutSecond, config.TimeoutSecond)
 
 	infoShort := wd_short_info.ParseWoodpeckerInfo2Short(*wdInfo)
 
-	p := Plugin{
+	p := GiteaCCRelease{
 		Name:           cliName,
 		Version:        cliVersion,
 		woodpeckerInfo: wdInfo,

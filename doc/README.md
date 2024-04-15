@@ -9,14 +9,16 @@ how to dev
 
 ### libs
 
-| lib                                                | version |
-|:---------------------------------------------------|:--------|
-| https://github.com/stretchr/testify                | v1.9.0  |
-| https://github.com/gookit/color                    | v1.5.4  |
-| https://github.com/Masterminds/semver              | v3.2.1  |
-| https://github.com/urfave/cli/                     | v2.27.1 |
-| https://github.com/sinlov-go/unittest-kit          | v1.1.0  |
-| https://github.com/woodpecker-kit/woodpecker-tools | v1.19.0 |
+| lib                                                        | version |
+|:-----------------------------------------------------------|:--------|
+| https://github.com/stretchr/testify                        | v1.9.0  |
+| https://github.com/gookit/color                            | v1.5.4  |
+| https://github.com/Masterminds/semver                      | v3.2.1  |
+| https://github.com/urfave/cli/                             | v2.27.1 |
+| https://github.com/sinlov-go/unittest-kit                  | v1.1.0  |
+| https://github.com/woodpecker-kit/woodpecker-tools         | v1.19.0 |
+| https://github.com/convention-change/convention-change-log | v1.7.0  |
+| https://gitea.com/gitea/go-sdk                             | v0.17.1 |
 
 - more libs see [go.mod](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/blob/main/go.mod)
 

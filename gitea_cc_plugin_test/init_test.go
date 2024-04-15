@@ -48,6 +48,7 @@ var (
 	valEnvGiteaDryRun            = true
 	valEnvGiteaDraft             = false
 	valEnvGiteaPrerelease        = true
+	valEnvGiteaTimeoutSecond     uint
 	valEnvGiteaBaseUrl           = ""
 	valEnvGiteaInsecure          = false
 	valEnvGiteaApiKey            = ""
@@ -69,6 +70,7 @@ func init() {
 	valEnvGiteaDryRun = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaDryRun, true)
 	valEnvGiteaDraft = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaDraft, false)
 	valEnvGiteaPrerelease = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaPrerelease, true)
+	valEnvGiteaTimeoutSecond = uint(env_kit.FetchOsEnvInt(gitea_cc_plugin.EnvGiteaTimeoutSecond, 60))
 	valEnvGiteaBaseUrl = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaBaseUrl, "")
 	valEnvGiteaInsecure = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaInsecure, false)
 	valEnvGiteaApiKey = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaApiKey, "")
@@ -117,7 +119,7 @@ func envMustArgsCheck(t *testing.T) bool {
 	return false
 }
 
-func generateTransferStepsOut(plugin gitea_cc_plugin.Plugin, mark string, data interface{}) error {
+func generateTransferStepsOut(plugin gitea_cc_plugin.GiteaCCRelease, mark string, data interface{}) error {
 	_, err := wd_steps_transfer.Out(plugin.Settings.RootPath, plugin.Settings.StepsTransferPath, plugin.GetWoodPeckerInfo(), mark, data)
 	return err
 }
@@ -134,6 +136,7 @@ func mockPluginSettings() gitea_cc_plugin.Settings {
 	settings.DryRun = valEnvGiteaDryRun
 	settings.GiteaDraft = valEnvGiteaDraft
 	settings.GiteaPrerelease = valEnvGiteaPrerelease
+	settings.GiteaTimeoutSecond = valEnvGiteaTimeoutSecond
 	settings.GiteaBaseUrl = valEnvGiteaBaseUrl
 	settings.GiteaInsecure = valEnvGiteaInsecure
 	settings.GiteaApiKey = valEnvGiteaApiKey
@@ -148,8 +151,8 @@ func mockPluginSettings() gitea_cc_plugin.Settings {
 
 }
 
-func mockPluginWithSettings(t *testing.T, woodpeckerInfo wd_info.WoodpeckerInfo, settings gitea_cc_plugin.Settings) gitea_cc_plugin.Plugin {
-	p := gitea_cc_plugin.Plugin{
+func mockPluginWithSettings(t *testing.T, woodpeckerInfo wd_info.WoodpeckerInfo, settings gitea_cc_plugin.Settings) gitea_cc_plugin.GiteaCCRelease {
+	p := gitea_cc_plugin.GiteaCCRelease{
 		Name:    mockName,
 		Version: mockVersion,
 	}

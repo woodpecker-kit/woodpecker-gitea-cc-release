@@ -6,8 +6,8 @@ import (
 )
 
 type (
-	// Plugin gitea_cc_plugin all config
-	Plugin struct {
+	// GiteaCCRelease gitea_cc_plugin all config
+	GiteaCCRelease struct {
 		Name           string
 		Version        string
 		woodpeckerInfo *wd_info.WoodpeckerInfo
@@ -16,11 +16,11 @@ type (
 
 		Settings Settings
 
-		FuncPlugin FuncPlugin `json:"-"`
+		FuncPlugin FuncGiteaCCRelease `json:"-"`
 	}
 )
 
-type FuncPlugin interface {
+type FuncGiteaCCRelease interface {
 	ShortInfo() wd_short_info.WoodpeckerInfoShort
 
 	SetWoodpeckerInfo(info wd_info.WoodpeckerInfo)

@@ -26,22 +26,11 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## Features
 
+- support [gitea](https://gitea.io/) version `gitea >= 1.11`
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
 
 ## usage
-
-- use this template, replace list below and add usage
-    - `github.com/woodpecker-kit/woodpecker-gitea-cc-release` to your package name
-    - `woodpecker-kit` to your owner name
-    - `woodpecker-gitea-cc-release` to your project name
-
-- use github action for this workflow push to docker hub, must add at github secrets
-    - `DOCKERHUB_OWNER` user of docker hub
-    - `DOCKERHUB_REPO_NAME` repo name of docker hub
-    - `DOCKERHUB_TOKEN` token of docker hub user
-
-- if use `wd_steps_transfer` just add `.woodpecker_kit.steps.transfer` at git ignore
 
 ### workflow usage
 
@@ -49,4 +38,4 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## Notice
 
-- want dev this project, see [doc](doc/README.md)
+- want dev this project, see [dev doc](doc/README.md)

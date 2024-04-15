@@ -5,9 +5,11 @@ const (
 	FileExistsDoOverwrite = "overwrite"
 	FileExistsDoSkip      = "skip"
 
-	// StepsTransferMarkDemoConfig
-	// steps transfer key
-	StepsTransferMarkDemoConfig = "demo_config"
+	// versionRcFileName read convention change log config
+	versionRcFileName = ".versionrc"
+
+	// versionConventionChangeLogFileName for read convention change log file name
+	versionConventionChangeLogFileName = "CHANGELOG.md"
 )
 
 type (
@@ -19,16 +21,23 @@ type (
 		StepsOutDisable   bool
 		RootPath          string
 
-		DryRun          bool
-		GiteaDraft      bool
-		GiteaPrerelease bool
-		GiteaBaseUrl    string
-		GiteaInsecure   bool
-		GiteaApiKey     string
+		DryRun             bool
+		GiteaDraft         bool
+		GiteaPrerelease    bool
+		GiteaTimeoutSecond uint
+		GiteaBaseUrl       string
+		GiteaInsecure      bool
+		GiteaApiKey        string
 
-		GiteaReleaseFilesGlobs   []string
-		GiteaReleaseFileExistsDo string
-		GiteaFilesChecksum       []string
+		GiteaReleaseFilesGlobs       []string
+		GiteaReleaseFileGlobRootPath string
+		GiteaReleaseFileExistsDo     string
+		GiteaFilesChecksum           []string
+
+		GiteaReleaseTitle                  string
+		GiteaReleaseNote                   string
+		GiteaReleaseNoteByConventionChange bool
+		GiteaReleaseConventionReadPath     string
 	}
 )
 

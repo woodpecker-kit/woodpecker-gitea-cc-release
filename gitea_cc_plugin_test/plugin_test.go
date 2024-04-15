@@ -10,7 +10,7 @@ import (
 )
 
 func TestCheckArgsPlugin(t *testing.T) {
-	t.Log("mock Plugin")
+	t.Log("mock GiteaCCRelease")
 	// successArgs
 	successArgsWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
 		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
@@ -116,14 +116,14 @@ func TestCheckArgsPlugin(t *testing.T) {
 }
 
 func TestPlugin(t *testing.T) {
-	t.Log("do Plugin")
+	t.Log("do GiteaCCRelease")
 	if envCheck(t) {
 		return
 	}
 	if envMustArgsCheck(t) {
 		return
 	}
-	t.Log("mock Plugin")
+	t.Log("mock GiteaCCRelease")
 
 	t.Log("mock gitea_cc_plugin config")
 
