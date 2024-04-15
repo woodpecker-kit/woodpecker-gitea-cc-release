@@ -16,12 +16,42 @@ func TestCheckArgsPlugin(t *testing.T) {
 		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
 	)
 	successArgsSettings := mockPluginSettings()
+	successArgsSettings.GiteaBaseUrl = "foo url"
+	successArgsSettings.GiteaApiKey = "bar key"
 
-	// notSupport
-	notSupportWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastCurrentStatus("not_support"),
+	// baseUrlEmpty
+	baseUrlEmptyWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
 	)
-	notSupportSettings := mockPluginSettings()
+	baseUrlEmptySettings := mockPluginSettings()
+	baseUrlEmptySettings.GiteaApiKey = "bar key"
+
+	// apkKeyEmpty
+	apkKeyEmptyWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
+	)
+	apkKeyEmptySettings := mockPluginSettings()
+	apkKeyEmptySettings.GiteaBaseUrl = "foo url"
+
+	// filesExistsDoError
+	filesExistsDoErrorWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
+	)
+	filesExistsDoErrorSettings := mockPluginSettings()
+	filesExistsDoErrorSettings.GiteaBaseUrl = "foo url"
+	filesExistsDoErrorSettings.GiteaApiKey = "bar key"
+	filesExistsDoErrorSettings.GiteaReleaseFilesGlobs = []string{"*.zip"}
+	filesExistsDoErrorSettings.GiteaReleaseFileExistsDo = "error"
+
+	// fileChecksumError
+	fileChecksumErrorWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
+	)
+	fileChecksumErrorSettings := mockPluginSettings()
+	fileChecksumErrorSettings.GiteaBaseUrl = "foo url"
+	fileChecksumErrorSettings.GiteaApiKey = "bar key"
+	fileChecksumErrorSettings.GiteaReleaseFilesGlobs = []string{"*.zip"}
+	fileChecksumErrorSettings.GiteaFilesChecksum = []string{"some"}
 
 	tests := []struct {
 		name           string
@@ -39,9 +69,24 @@ func TestCheckArgsPlugin(t *testing.T) {
 			wantArgFlagNotErr: true,
 		},
 		{
-			name:           "notSupport",
-			woodpeckerInfo: notSupportWoodpeckerInfo,
-			settings:       notSupportSettings,
+			name:           "baseUrlEmpty",
+			woodpeckerInfo: baseUrlEmptyWoodpeckerInfo,
+			settings:       baseUrlEmptySettings,
+		},
+		{
+			name:           "apkKeyEmpty",
+			woodpeckerInfo: apkKeyEmptyWoodpeckerInfo,
+			settings:       apkKeyEmptySettings,
+		},
+		{
+			name:           "filesExistsDoError",
+			woodpeckerInfo: filesExistsDoErrorWoodpeckerInfo,
+			settings:       filesExistsDoErrorSettings,
+		},
+		{
+			name:           "fileChecksumError",
+			woodpeckerInfo: fileChecksumErrorWoodpeckerInfo,
+			settings:       fileChecksumErrorSettings,
 		},
 	}
 

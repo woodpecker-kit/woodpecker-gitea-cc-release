@@ -31,10 +31,6 @@ var (
 	testBaseFolderPath = ""
 	testGoldenKit      *unittest_file_kit.TestGoldenKit
 
-	envTimeoutSecond    uint
-	envPaddingLeftMax   = 0
-	envPrinterPrintKeys []string
-
 	// mustSetInCiEnvList
 	//  for check set in CI env not empty
 	mustSetInCiEnvList = []string{
@@ -43,10 +39,21 @@ var (
 	}
 	// mustSetArgsAsEnvList
 	mustSetArgsAsEnvList = []string{
-		//gitea_cc_plugin.EnvStepsTransferDemo,
+		gitea_cc_plugin.EnvGiteaBaseUrl,
+		gitea_cc_plugin.EnvGiteaApiKey,
 	}
 
-	valEnvPluginDebug = false
+	valEnvTimeoutSecond          uint
+	valEnvPluginDebug            = false
+	valEnvGiteaDryRun            = true
+	valEnvGiteaDraft             = false
+	valEnvGiteaPrerelease        = true
+	valEnvGiteaBaseUrl           = ""
+	valEnvGiteaInsecure          = false
+	valEnvGiteaApiKey            = ""
+	valEnvGiteaReleaseFilesGlobs []string
+	valEnvGiteaFileExistsDo      = gitea_cc_plugin.EnvGiteaDraft
+	valEnvGiteaFilesChecksum     []string
 )
 
 func init() {
@@ -55,14 +62,19 @@ func init() {
 	// if open wd_template please open this
 	//wd_template.RegisterSettings(wd_template.DefaultHelpers)
 
-	envTimeoutSecond = uint(env_kit.FetchOsEnvInt(wd_flag.EnvKeyPluginTimeoutSecond, 10))
-
-	envPaddingLeftMax = env_kit.FetchOsEnvInt(gitea_cc_plugin.EnvPrinterPaddingLeftMax, 24)
-	envPrinterPrintKeys = env_kit.FetchOsEnvStringSlice(gitea_cc_plugin.EnvPrinterPrintKeys)
-
 	testGoldenKit = unittest_file_kit.NewTestGoldenKit(testBaseFolderPath)
 
+	valEnvTimeoutSecond = uint(env_kit.FetchOsEnvInt(wd_flag.EnvKeyPluginTimeoutSecond, 10))
 	valEnvPluginDebug = env_kit.FetchOsEnvBool(wd_flag.EnvKeyPluginDebug, false)
+	valEnvGiteaDryRun = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaDryRun, true)
+	valEnvGiteaDraft = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaDraft, false)
+	valEnvGiteaPrerelease = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaPrerelease, true)
+	valEnvGiteaBaseUrl = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaBaseUrl, "")
+	valEnvGiteaInsecure = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaInsecure, false)
+	valEnvGiteaApiKey = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaApiKey, "")
+	valEnvGiteaReleaseFilesGlobs = env_kit.FetchOsEnvStringSlice(gitea_cc_plugin.EnvGiteaReleaseFilesGlobs)
+	valEnvGiteaFileExistsDo = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaReleaseFileExistsDo, gitea_cc_plugin.FileExistsDoFail)
+	valEnvGiteaFilesChecksum = env_kit.FetchOsEnvStringSlice(gitea_cc_plugin.EnvGiteaFilesChecksum)
 }
 
 // test case basic tools start
@@ -115,14 +127,22 @@ func mockPluginSettings() gitea_cc_plugin.Settings {
 	settings := gitea_cc_plugin.Settings{
 		// use env:PLUGIN_DEBUG
 		Debug:             valEnvPluginDebug,
-		TimeoutSecond:     envTimeoutSecond,
+		TimeoutSecond:     valEnvTimeoutSecond,
 		RootPath:          testGoldenKit.GetTestDataFolderFullPath(),
 		StepsTransferPath: wd_steps_transfer.DefaultKitStepsFileName,
 	}
-
-	// remove or change this code
-	settings.PaddingLeftMax = envPaddingLeftMax
-	settings.EnvPrintKeys = envPrinterPrintKeys
+	settings.DryRun = valEnvGiteaDryRun
+	settings.GiteaDraft = valEnvGiteaDraft
+	settings.GiteaPrerelease = valEnvGiteaPrerelease
+	settings.GiteaBaseUrl = valEnvGiteaBaseUrl
+	settings.GiteaInsecure = valEnvGiteaInsecure
+	settings.GiteaApiKey = valEnvGiteaApiKey
+	settings.GiteaReleaseFilesGlobs = valEnvGiteaReleaseFilesGlobs
+	settings.GiteaReleaseFileExistsDo = valEnvGiteaFileExistsDo
+	if settings.GiteaReleaseFileExistsDo == "" {
+		settings.GiteaReleaseFileExistsDo = gitea_cc_plugin.FileExistsDoFail
+	}
+	settings.GiteaFilesChecksum = valEnvGiteaFilesChecksum
 
 	return settings
 

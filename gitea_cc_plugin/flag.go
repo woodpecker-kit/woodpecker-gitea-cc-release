@@ -1,6 +1,7 @@
 package gitea_cc_plugin
 
 import (
+	"fmt"
 	"github.com/urfave/cli/v2"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_flag"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
@@ -9,6 +10,33 @@ import (
 )
 
 const (
+	CliNameGiteaDryRun = "settings.gitea-dry-run"
+	EnvGiteaDryRun     = "PLUGIN_GITEA_DRY_RUN"
+
+	CliNameGiteaDraft = "settings.gitea-draft"
+	EnvGiteaDraft     = "PLUGIN_GITEA_DRAFT"
+
+	CliNameGiteaPrerelease = "settings.gitea-prerelease"
+	EnvGiteaPrerelease     = "PLUGIN_GITEA_PRERELEASE"
+
+	CliNameGiteaBaseUrl = "settings.gitea-base-url"
+	EnvGiteaBaseUrl     = "PLUGIN_GITEA_BASE_URL"
+
+	CliNameGiteaInsecure = "settings.gitea-insecure"
+	EnvGiteaInsecure     = "PLUGIN_GITEA_INSECURE"
+
+	CliNameGiteaApiKey = "settings.gitea-api-key"
+	EnvGiteaApiKey     = "PLUGIN_GITEA_API_KEY"
+
+	CliNameGiteaReleaseFilesGlobs = "settings.gitea-release-files-globs"
+	EnvGiteaReleaseFilesGlobs     = "PLUGIN_GITEA_RELEASE_FILES_GLOBS"
+
+	CliNameGiteaReleaseFileExistsDo = "settings.gitea-release-file-exists-do"
+	EnvGiteaReleaseFileExistsDo     = "PLUGIN_GITEA_RELEASE_FILE_EXISTS_DO"
+
+	CliNameGiteaFilesChecksum = "settings.gitea-files-checksum"
+	EnvGiteaFilesChecksum     = "PLUGIN_GITEA_FILES_CHECKSUM"
+
 	// remove or change this code
 
 	CliNameNotEmptyEnvs = "settings.not-empty-envs"
@@ -28,34 +56,58 @@ const (
 // Other modules also have flags
 func GlobalFlag() []cli.Flag {
 	return []cli.Flag{
-		// new flag string template if no use, please replace this
-		&cli.StringSliceFlag{
-			Name:    CliNameNotEmptyEnvs,
-			Usage:   "if use this args, will check envs must not empty, fail will exit not 0",
-			EnvVars: []string{EnvNotEmptyEnvs},
-		},
-		&cli.StringSliceFlag{
-			Name:    CliNamePrinterPrintKeys,
-			Usage:   "if use this args, will print env by keys",
-			EnvVars: []string{EnvPrinterPrintKeys},
-		},
-		&cli.IntFlag{
-			Name:    CliNamePrinterPaddingLeftMax,
-			Usage:   "set env printer padding left max count, minimum 24, default 32",
-			EnvVars: []string{EnvPrinterPaddingLeftMax},
-			Value:   32,
+		&cli.BoolFlag{
+			Name:    CliNameGiteaDryRun,
+			Usage:   "gitea release dry run",
+			Value:   true,
+			EnvVars: []string{EnvGiteaDryRun},
 		},
 		&cli.BoolFlag{
-			Name:    CliNameStepsTransferDemo,
-			Usage:   "if use this args, will print steps transfer demo",
-			EnvVars: []string{EnvStepsTransferDemo},
+			Name:    CliNameGiteaDraft,
+			Usage:   "gitea release draft",
+			Value:   false,
+			EnvVars: []string{EnvGiteaDraft},
 		},
-		// env_printer_plugin end
-		//&cli.StringFlag{
-		//	Name:    "settings.new_arg",
-		//	Usage:   "",
-		//	EnvVars: []string{"PLUGIN_new_arg"},
-		//},
+		&cli.BoolFlag{
+			Name:    CliNameGiteaPrerelease,
+			Usage:   "gitea release type prerelease",
+			Value:   true,
+			EnvVars: []string{EnvGiteaPrerelease},
+		},
+		&cli.StringFlag{
+			Name:    CliNameGiteaBaseUrl,
+			Usage:   "gitea base url, Required",
+			EnvVars: []string{EnvGiteaBaseUrl},
+		},
+		&cli.BoolFlag{
+			Name:    CliNameGiteaInsecure,
+			Usage:   "visit base-url via insecure https protocol",
+			Value:   false,
+			EnvVars: []string{EnvGiteaInsecure},
+		},
+		&cli.StringFlag{
+			Name:    CliNameGiteaApiKey,
+			Usage:   "gitea api key, Required",
+			EnvVars: []string{EnvGiteaApiKey},
+		},
+
+		// release files
+		&cli.StringSliceFlag{
+			Name:    CliNameGiteaReleaseFilesGlobs,
+			Usage:   "release as files by glob pattern, if empty will skip release files",
+			EnvVars: []string{EnvGiteaReleaseFilesGlobs},
+		},
+		&cli.StringFlag{
+			Name:    CliNameGiteaReleaseFileExistsDo,
+			Usage:   fmt.Sprintf("what to do if release file already exist support: %v", supportFileExistsDoList),
+			Value:   FileExistsDoFail,
+			EnvVars: []string{EnvGiteaReleaseFileExistsDo},
+		},
+		&cli.StringSliceFlag{
+			Name:    CliNameGiteaFilesChecksum,
+			Usage:   fmt.Sprintf("generate specific checksums, empty will skip, support: %v", CheckSumSupport),
+			EnvVars: []string{EnvGiteaFilesChecksum},
+		},
 	}
 }
 
@@ -78,20 +130,21 @@ func BindCliFlags(c *cli.Context,
 		StepsOutDisable:   stepsOutDisable,
 		RootPath:          rootPath,
 
-		// remove or change this code
-		NotEmptyEnvKeys:   c.StringSlice(CliNameNotEmptyEnvs),
-		EnvPrintKeys:      c.StringSlice(CliNamePrinterPrintKeys),
-		PaddingLeftMax:    c.Int(CliNamePrinterPaddingLeftMax),
-		StepsTransferDemo: c.Bool(CliNameStepsTransferDemo),
+		DryRun:          c.Bool(CliNameGiteaDryRun),
+		GiteaDraft:      c.Bool(CliNameGiteaDraft),
+		GiteaPrerelease: c.Bool(CliNameGiteaPrerelease),
+		GiteaBaseUrl:    c.String(CliNameGiteaBaseUrl),
+		GiteaInsecure:   c.Bool(CliNameGiteaInsecure),
+		GiteaApiKey:     c.String(CliNameGiteaApiKey),
+
+		GiteaReleaseFilesGlobs:   c.StringSlice(CliNameGiteaReleaseFilesGlobs),
+		GiteaReleaseFileExistsDo: c.String(CliNameGiteaReleaseFileExistsDo),
+		GiteaFilesChecksum:       c.StringSlice(CliNameGiteaFilesChecksum),
 	}
 
 	// set default TimeoutSecond
 	if config.TimeoutSecond == 0 {
 		config.TimeoutSecond = 10
-	}
-	// set default PaddingLeftMax
-	if config.PaddingLeftMax < 24 {
-		config.PaddingLeftMax = 24
 	}
 
 	wd_log.Debugf("args %s: %v", wd_flag.NameCliPluginTimeoutSecond, config.TimeoutSecond)

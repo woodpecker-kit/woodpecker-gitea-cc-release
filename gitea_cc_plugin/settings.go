@@ -1,8 +1,10 @@
 package gitea_cc_plugin
 
-import "github.com/woodpecker-kit/woodpecker-tools/wd_info"
-
 const (
+	FileExistsDoFail      = "fail"
+	FileExistsDoOverwrite = "overwrite"
+	FileExistsDoSkip      = "skip"
+
 	// StepsTransferMarkDemoConfig
 	// steps transfer key
 	StepsTransferMarkDemoConfig = "demo_config"
@@ -17,24 +19,23 @@ type (
 		StepsOutDisable   bool
 		RootPath          string
 
-		DryRun bool
+		DryRun          bool
+		GiteaDraft      bool
+		GiteaPrerelease bool
+		GiteaBaseUrl    string
+		GiteaInsecure   bool
+		GiteaApiKey     string
 
-		// remove or change this config
-		NotEmptyEnvKeys   []string
-		EnvPrintKeys      []string
-		PaddingLeftMax    int
-		StepsTransferDemo bool
+		GiteaReleaseFilesGlobs   []string
+		GiteaReleaseFileExistsDo string
+		GiteaFilesChecksum       []string
 	}
 )
 
 var (
-	// pluginBuildStateSupport
-	pluginBuildStateSupport = []string{
-		wd_info.BuildStatusCreated,
-		wd_info.BuildStatusRunning,
-		wd_info.BuildStatusSuccess,
-		wd_info.BuildStatusFailure,
-		wd_info.BuildStatusError,
-		wd_info.BuildStatusKilled,
+	supportFileExistsDoList = []string{
+		FileExistsDoFail,
+		FileExistsDoOverwrite,
+		FileExistsDoSkip,
 	}
 )
