@@ -5,9 +5,9 @@ import (
 	"github.com/sinlov-go/unittest-kit/env_kit"
 	"github.com/urfave/cli/v2"
 	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/constant"
+	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/gitea_cc_plugin"
 	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/internal/pkg_kit"
 	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/internal/version_check"
-	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/plugin"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_urfave_cli_v2"
@@ -16,7 +16,7 @@ import (
 	"os/user"
 )
 
-var wdPlugin *plugin.Plugin
+var wdPlugin *gitea_cc_plugin.GiteaCCRelease
 
 // GlobalBeforeAction
 // do command Action before flag global.
@@ -26,7 +26,7 @@ func GlobalBeforeAction(c *cli.Context) error {
 	if isDebug {
 		// print global debug info
 		allEnvPrintStr := env_kit.FindAllEnv4PrintAsSortJust(36)
-		wd_log.Verbosef("==> plugin start with all env:\n%s", allEnvPrintStr)
+		wd_log.Verbosef("==> gitea_cc_plugin start with all env:\n%s", allEnvPrintStr)
 		currentUser, err := user.Current()
 		if err == nil {
 			wd_log.Verbosef("==> current Username : %s\n", currentUser.Username)
@@ -71,7 +71,7 @@ func GlobalBeforeAction(c *cli.Context) error {
 	stepsTransferFilePath := c.String(constant.NameCliPluginStepsTransferFilePath)
 	stepsOutDisable := c.Bool(constant.NameCliPluginStepsTransferDisableOut)
 
-	pluginBind, errBindPlugin := plugin.BindCliFlags(c,
+	pluginBind, errBindPlugin := gitea_cc_plugin.BindCliFlags(c,
 		isDebug,
 		namePlugin, cliVersion,
 		&woodpeckerInfo,

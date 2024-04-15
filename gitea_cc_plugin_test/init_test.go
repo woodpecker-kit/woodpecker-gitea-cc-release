@@ -1,10 +1,10 @@
-package plugin_test
+package gitea_cc_plugin_test
 
 import (
 	"fmt"
 	"github.com/sinlov-go/unittest-kit/env_kit"
 	"github.com/sinlov-go/unittest-kit/unittest_file_kit"
-	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/plugin"
+	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/gitea_cc_plugin"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_flag"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
@@ -31,10 +31,6 @@ var (
 	testBaseFolderPath = ""
 	testGoldenKit      *unittest_file_kit.TestGoldenKit
 
-	envTimeoutSecond    uint
-	envPaddingLeftMax   = 0
-	envPrinterPrintKeys []string
-
 	// mustSetInCiEnvList
 	//  for check set in CI env not empty
 	mustSetInCiEnvList = []string{
@@ -43,10 +39,22 @@ var (
 	}
 	// mustSetArgsAsEnvList
 	mustSetArgsAsEnvList = []string{
-		//plugin.EnvStepsTransferDemo,
+		gitea_cc_plugin.EnvGiteaBaseUrl,
+		gitea_cc_plugin.EnvGiteaApiKey,
 	}
 
-	valEnvPluginDebug = false
+	valEnvTimeoutSecond          uint
+	valEnvPluginDebug            = false
+	valEnvGiteaDryRun            = true
+	valEnvGiteaDraft             = false
+	valEnvGiteaPrerelease        = true
+	valEnvGiteaTimeoutSecond     uint
+	valEnvGiteaBaseUrl           = ""
+	valEnvGiteaInsecure          = false
+	valEnvGiteaApiKey            = ""
+	valEnvGiteaReleaseFilesGlobs []string
+	valEnvGiteaFileExistsDo      = gitea_cc_plugin.EnvGiteaDraft
+	valEnvGiteaFilesChecksum     []string
 )
 
 func init() {
@@ -55,14 +63,20 @@ func init() {
 	// if open wd_template please open this
 	//wd_template.RegisterSettings(wd_template.DefaultHelpers)
 
-	envTimeoutSecond = uint(env_kit.FetchOsEnvInt(wd_flag.EnvKeyPluginTimeoutSecond, 10))
-
-	envPaddingLeftMax = env_kit.FetchOsEnvInt(plugin.EnvPrinterPaddingLeftMax, 24)
-	envPrinterPrintKeys = env_kit.FetchOsEnvStringSlice(plugin.EnvPrinterPrintKeys)
-
 	testGoldenKit = unittest_file_kit.NewTestGoldenKit(testBaseFolderPath)
 
+	valEnvTimeoutSecond = uint(env_kit.FetchOsEnvInt(wd_flag.EnvKeyPluginTimeoutSecond, 10))
 	valEnvPluginDebug = env_kit.FetchOsEnvBool(wd_flag.EnvKeyPluginDebug, false)
+	valEnvGiteaDryRun = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaDryRun, true)
+	valEnvGiteaDraft = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaDraft, false)
+	valEnvGiteaPrerelease = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaPrerelease, true)
+	valEnvGiteaTimeoutSecond = uint(env_kit.FetchOsEnvInt(gitea_cc_plugin.EnvGiteaTimeoutSecond, 60))
+	valEnvGiteaBaseUrl = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaBaseUrl, "")
+	valEnvGiteaInsecure = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaInsecure, false)
+	valEnvGiteaApiKey = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaApiKey, "")
+	valEnvGiteaReleaseFilesGlobs = env_kit.FetchOsEnvStringSlice(gitea_cc_plugin.EnvGiteaReleaseFilesGlobs)
+	valEnvGiteaFileExistsDo = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaReleaseFileExistsDo, gitea_cc_plugin.FileExistsDoFail)
+	valEnvGiteaFilesChecksum = env_kit.FetchOsEnvStringSlice(gitea_cc_plugin.EnvGiteaFilesChecksum)
 }
 
 // test case basic tools start
@@ -105,31 +119,40 @@ func envMustArgsCheck(t *testing.T) bool {
 	return false
 }
 
-func generateTransferStepsOut(plugin plugin.Plugin, mark string, data interface{}) error {
+func generateTransferStepsOut(plugin gitea_cc_plugin.GiteaCCRelease, mark string, data interface{}) error {
 	_, err := wd_steps_transfer.Out(plugin.Settings.RootPath, plugin.Settings.StepsTransferPath, plugin.GetWoodPeckerInfo(), mark, data)
 	return err
 }
 
-func mockPluginSettings() plugin.Settings {
+func mockPluginSettings() gitea_cc_plugin.Settings {
 	// all mock settings can set here
-	settings := plugin.Settings{
+	settings := gitea_cc_plugin.Settings{
 		// use env:PLUGIN_DEBUG
 		Debug:             valEnvPluginDebug,
-		TimeoutSecond:     envTimeoutSecond,
+		TimeoutSecond:     valEnvTimeoutSecond,
 		RootPath:          testGoldenKit.GetTestDataFolderFullPath(),
 		StepsTransferPath: wd_steps_transfer.DefaultKitStepsFileName,
 	}
-
-	// remove or change this code
-	settings.PaddingLeftMax = envPaddingLeftMax
-	settings.EnvPrintKeys = envPrinterPrintKeys
+	settings.DryRun = valEnvGiteaDryRun
+	settings.GiteaDraft = valEnvGiteaDraft
+	settings.GiteaPrerelease = valEnvGiteaPrerelease
+	settings.GiteaTimeoutSecond = valEnvGiteaTimeoutSecond
+	settings.GiteaBaseUrl = valEnvGiteaBaseUrl
+	settings.GiteaInsecure = valEnvGiteaInsecure
+	settings.GiteaApiKey = valEnvGiteaApiKey
+	settings.GiteaReleaseFilesGlobs = valEnvGiteaReleaseFilesGlobs
+	settings.GiteaReleaseFileExistsDo = valEnvGiteaFileExistsDo
+	if settings.GiteaReleaseFileExistsDo == "" {
+		settings.GiteaReleaseFileExistsDo = gitea_cc_plugin.FileExistsDoFail
+	}
+	settings.GiteaFilesChecksum = valEnvGiteaFilesChecksum
 
 	return settings
 
 }
 
-func mockPluginWithSettings(t *testing.T, woodpeckerInfo wd_info.WoodpeckerInfo, settings plugin.Settings) plugin.Plugin {
-	p := plugin.Plugin{
+func mockPluginWithSettings(t *testing.T, woodpeckerInfo wd_info.WoodpeckerInfo, settings gitea_cc_plugin.Settings) gitea_cc_plugin.GiteaCCRelease {
+	p := gitea_cc_plugin.GiteaCCRelease{
 		Name:    mockName,
 		Version: mockVersion,
 	}

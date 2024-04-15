@@ -1,32 +1,63 @@
-package plugin_test
+package gitea_cc_plugin_test
 
 import (
-	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/plugin"
+	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/gitea_cc_plugin"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_mock"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_short_info"
+	"path/filepath"
 	"testing"
 )
 
 func TestCheckArgsPlugin(t *testing.T) {
-	t.Log("mock Plugin")
+	t.Log("mock GiteaCCRelease")
 	// successArgs
 	successArgsWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
 		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
 	)
 	successArgsSettings := mockPluginSettings()
+	successArgsSettings.GiteaBaseUrl = "foo url"
+	successArgsSettings.GiteaApiKey = "bar key"
 
-	// notSupport
-	notSupportWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastCurrentStatus("not_support"),
+	// baseUrlEmpty
+	baseUrlEmptyWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
 	)
-	notSupportSettings := mockPluginSettings()
+	baseUrlEmptySettings := mockPluginSettings()
+	baseUrlEmptySettings.GiteaApiKey = "bar key"
+
+	// apkKeyEmpty
+	apkKeyEmptyWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
+	)
+	apkKeyEmptySettings := mockPluginSettings()
+	apkKeyEmptySettings.GiteaBaseUrl = "foo url"
+
+	// filesExistsDoError
+	filesExistsDoErrorWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
+	)
+	filesExistsDoErrorSettings := mockPluginSettings()
+	filesExistsDoErrorSettings.GiteaBaseUrl = "foo url"
+	filesExistsDoErrorSettings.GiteaApiKey = "bar key"
+	filesExistsDoErrorSettings.GiteaReleaseFilesGlobs = []string{"*.zip"}
+	filesExistsDoErrorSettings.GiteaReleaseFileExistsDo = "error"
+
+	// fileChecksumError
+	fileChecksumErrorWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
+	)
+	fileChecksumErrorSettings := mockPluginSettings()
+	fileChecksumErrorSettings.GiteaBaseUrl = "foo url"
+	fileChecksumErrorSettings.GiteaApiKey = "bar key"
+	fileChecksumErrorSettings.GiteaReleaseFilesGlobs = []string{"*.zip"}
+	fileChecksumErrorSettings.GiteaFilesChecksum = []string{"some"}
 
 	tests := []struct {
 		name           string
 		woodpeckerInfo wd_info.WoodpeckerInfo
-		settings       plugin.Settings
+		settings       gitea_cc_plugin.Settings
 		workRoot       string
 
 		isDryRun          bool
@@ -39,9 +70,24 @@ func TestCheckArgsPlugin(t *testing.T) {
 			wantArgFlagNotErr: true,
 		},
 		{
-			name:           "notSupport",
-			woodpeckerInfo: notSupportWoodpeckerInfo,
-			settings:       notSupportSettings,
+			name:           "baseUrlEmpty",
+			woodpeckerInfo: baseUrlEmptyWoodpeckerInfo,
+			settings:       baseUrlEmptySettings,
+		},
+		{
+			name:           "apkKeyEmpty",
+			woodpeckerInfo: apkKeyEmptyWoodpeckerInfo,
+			settings:       apkKeyEmptySettings,
+		},
+		{
+			name:           "filesExistsDoError",
+			woodpeckerInfo: filesExistsDoErrorWoodpeckerInfo,
+			settings:       filesExistsDoErrorSettings,
+		},
+		{
+			name:           "fileChecksumError",
+			woodpeckerInfo: fileChecksumErrorWoodpeckerInfo,
+			settings:       fileChecksumErrorSettings,
 		},
 	}
 
@@ -71,45 +117,33 @@ func TestCheckArgsPlugin(t *testing.T) {
 }
 
 func TestPlugin(t *testing.T) {
-	t.Log("do Plugin")
+	t.Log("do GiteaCCRelease")
 	if envCheck(t) {
 		return
 	}
 	if envMustArgsCheck(t) {
 		return
 	}
-	t.Log("mock Plugin")
+	t.Log("mock GiteaCCRelease")
 
-	t.Log("mock plugin config")
+	t.Log("mock gitea_cc_plugin config")
 
-	// statusSuccess
-	statusSuccessWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
-	)
-	statusSuccessSettings := mockPluginSettings()
-
-	// statusFailure
-	statusFailureWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastCurrentStatus(wd_info.BuildStatusFailure),
-	)
-	statusFailureSettings := mockPluginSettings()
+	testDataPathRoot, errTestDataPathRoot := testGoldenKit.GetOrCreateTestDataFullPath("plugin_test")
+	if errTestDataPathRoot != nil {
+		t.Fatal(errTestDataPathRoot)
+	}
 
 	// tagPipeline
 	tagPipelineWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastWorkSpace(filepath.Join(testDataPathRoot, "tagPipeline")),
 		wd_mock.FastTag("v1.0.0", "new tag"),
 	)
 	tagPipelineSettings := mockPluginSettings()
 
-	// pullRequestPipeline
-	pullRequestPipelineWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastPullRequest("1", "new pr", "feature-support", "main", "main"),
-	)
-	pullRequestPipelineSettings := mockPluginSettings()
-
 	tests := []struct {
 		name           string
 		woodpeckerInfo wd_info.WoodpeckerInfo
-		settings       plugin.Settings
+		settings       gitea_cc_plugin.Settings
 		workRoot       string
 
 		ossTransferKey  string
@@ -119,26 +153,9 @@ func TestPlugin(t *testing.T) {
 		wantErr  bool
 	}{
 		{
-			name:           "statusSuccess",
-			woodpeckerInfo: statusSuccessWoodpeckerInfo,
-			settings:       statusSuccessSettings,
-		},
-		{
-			name:           "statusFailure",
-			woodpeckerInfo: statusFailureWoodpeckerInfo,
-			settings:       statusFailureSettings,
-			isDryRun:       true,
-		},
-		{
 			name:           "tagPipeline",
 			woodpeckerInfo: tagPipelineWoodpeckerInfo,
 			settings:       tagPipelineSettings,
-			isDryRun:       true,
-		},
-		{
-			name:           "pullRequestPipeline",
-			woodpeckerInfo: pullRequestPipelineWoodpeckerInfo,
-			settings:       pullRequestPipelineSettings,
 			isDryRun:       true,
 		},
 	}
