@@ -6,7 +6,9 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
+	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_short_info"
+	"net"
 	"net/http"
 	"net/http/cookiejar"
 	"strings"
@@ -120,7 +122,7 @@ func NewReleaseClientByWoodpeckerShort(info wd_short_info.WoodpeckerInfoShort, c
 	}
 
 	httpClient := &http.Client{
-		Timeout: time.Duration(config.GiteaTimeoutSecond),
+		Timeout: time.Duration(config.GiteaTimeoutSecond) * time.Second,
 	}
 	if config.GiteaInsecure {
 		cookieJar, _ := cookiejar.New(nil)
@@ -128,15 +130,26 @@ func NewReleaseClientByWoodpeckerShort(info wd_short_info.WoodpeckerInfoShort, c
 			Jar: cookieJar,
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+				DialContext: (&net.Dialer{
+					Timeout:   time.Duration(config.TimeoutSecond*3) * time.Second,
+					KeepAlive: time.Duration(config.TimeoutSecond*3) * time.Second,
+				}).DialContext,
+				TLSHandshakeTimeout:   time.Duration(config.TimeoutSecond) * time.Second,
+				ResponseHeaderTimeout: time.Duration(config.TimeoutSecond) * time.Second,
+				ExpectContinueTimeout: 1 * time.Second,
 			},
-			Timeout: time.Duration(config.GiteaTimeoutSecond),
+			Timeout: time.Duration(config.GiteaTimeoutSecond) * time.Second,
 		}
 	}
 
-	client, errNewClient := gitea.NewClient(config.GiteaBaseUrl, gitea.SetToken(config.GiteaApiKey), gitea.SetHTTPClient(httpClient))
+	client, errNewClient := gitea.NewClient(config.GiteaBaseUrl,
+		gitea.SetToken(config.GiteaApiKey),
+		gitea.SetHTTPClient(httpClient),
+	)
 	if errNewClient != nil {
 		return nil, fmt.Errorf("failed to create gitea client: %s", errNewClient)
 	}
+	wd_log.Debug("gitea client created success")
 
 	// if the title was not provided via we use the tag instead
 	if config.GiteaReleaseTitle == "" {

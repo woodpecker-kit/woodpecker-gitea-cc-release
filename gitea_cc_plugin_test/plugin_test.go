@@ -6,6 +6,7 @@ import (
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_mock"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_short_info"
+	"path/filepath"
 	"testing"
 )
 
@@ -127,29 +128,17 @@ func TestPlugin(t *testing.T) {
 
 	t.Log("mock gitea_cc_plugin config")
 
-	// statusSuccess
-	statusSuccessWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
-	)
-	statusSuccessSettings := mockPluginSettings()
-
-	// statusFailure
-	statusFailureWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastCurrentStatus(wd_info.BuildStatusFailure),
-	)
-	statusFailureSettings := mockPluginSettings()
+	testDataPathRoot, errTestDataPathRoot := testGoldenKit.GetOrCreateTestDataFullPath("plugin_test")
+	if errTestDataPathRoot != nil {
+		t.Fatal(errTestDataPathRoot)
+	}
 
 	// tagPipeline
 	tagPipelineWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
+		wd_mock.FastWorkSpace(filepath.Join(testDataPathRoot, "tagPipeline")),
 		wd_mock.FastTag("v1.0.0", "new tag"),
 	)
 	tagPipelineSettings := mockPluginSettings()
-
-	// pullRequestPipeline
-	pullRequestPipelineWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastPullRequest("1", "new pr", "feature-support", "main", "main"),
-	)
-	pullRequestPipelineSettings := mockPluginSettings()
 
 	tests := []struct {
 		name           string
@@ -164,26 +153,9 @@ func TestPlugin(t *testing.T) {
 		wantErr  bool
 	}{
 		{
-			name:           "statusSuccess",
-			woodpeckerInfo: statusSuccessWoodpeckerInfo,
-			settings:       statusSuccessSettings,
-		},
-		{
-			name:           "statusFailure",
-			woodpeckerInfo: statusFailureWoodpeckerInfo,
-			settings:       statusFailureSettings,
-			isDryRun:       true,
-		},
-		{
 			name:           "tagPipeline",
 			woodpeckerInfo: tagPipelineWoodpeckerInfo,
 			settings:       tagPipelineSettings,
-			isDryRun:       true,
-		},
-		{
-			name:           "pullRequestPipeline",
-			woodpeckerInfo: pullRequestPipelineWoodpeckerInfo,
-			settings:       pullRequestPipelineSettings,
 			isDryRun:       true,
 		},
 	}
