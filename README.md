@@ -26,7 +26,13 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## Features
 
-- support [gitea](https://gitea.io/) version `gitea >= 1.11`
+- [x] support [gitea](https://gitea.io/) version `gitea >= 1.11`
+- [x] dry-run mode
+- [X] gitea client token use [Access Token](https://docs.gitea.com/development/api-usage#authentication)
+- [X] upload release files by glob pattern
+- [X] support upload check sum file
+- [X] support [conventional-commits](https://www.conventionalcommits.org/) log from
+  lib [github.com/convention-change/convention-change-log](https:// github.com/convention-change/convention-change-log)
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
 

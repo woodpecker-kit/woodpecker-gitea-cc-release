@@ -17,10 +17,7 @@ import (
 )
 
 var (
-	ErrMissingTag              = fmt.Errorf("NewReleaseClientByWoodpecker missing tag, please check now in tag build")
-	ErrPackageNotExist         = fmt.Errorf("PackageFetch not exist, code 404")
-	ErrPathCanNotLoadGoModFile = fmt.Errorf("path can not load go.mod")
-	ErrPackageGoExists         = fmt.Errorf("package go exists")
+	ErrMissingTag = fmt.Errorf("NewReleaseClientByWoodpecker missing tag, please check now in tag build")
 )
 
 // Release holds ties the drone env data and gitea client together.
@@ -91,7 +88,7 @@ type PluginGiteaReleaseClient interface {
 // and will create a release with the tag as the title.
 // check sums can be generated for the files [ sum.txt ] from flag CliNameGiteaReleaseFileRootPath
 func NewReleaseClientByWoodpeckerShort(info wd_short_info.WoodpeckerInfoShort, config Settings) (PluginGiteaReleaseClient, error) {
-	if info.Build.Event != wd_info.EventPipelineTag {
+	if info.Build.Event != wd_info.EventPipelineTag && !config.DryRun {
 		return nil, ErrMissingTag
 	}
 	uploadDesc := ""
