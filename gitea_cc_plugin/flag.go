@@ -81,7 +81,7 @@ func GlobalFlag() []cli.Flag {
 		},
 		&cli.StringFlag{
 			Name:    CliNameGiteaBaseUrl,
-			Usage:   "gitea base url, Required",
+			Usage:   fmt.Sprintf("gitea base url, when `%s` is [ gitea ] , set this flag empty, will try get from `%s`", wd_flag.EnvKeyCiForgeType, wd_flag.EnvKeyCiForgeUrl),
 			EnvVars: []string{EnvGiteaBaseUrl},
 		},
 		&cli.BoolFlag{

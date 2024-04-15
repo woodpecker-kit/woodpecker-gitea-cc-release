@@ -70,8 +70,16 @@ func (p *GiteaCCRelease) loadStepsTransfer() error {
 func (p *GiteaCCRelease) checkArgs() error {
 
 	if p.Settings.GiteaBaseUrl == "" {
-		return fmt.Errorf("check args [ %s ] must set, now is empty", CliNameGiteaBaseUrl)
+		if p.woodpeckerInfo.CiForgeInfo.CiForgeType == "gitea" {
+			wd_log.Debugf("when CiForgeType [ gitea ] woodpeckerInfo.CiForgeInfo.CiForgeUrl [ %s ] as GiteaBaseUrl", p.woodpeckerInfo.CiForgeInfo.CiForgeUrl)
+			p.Settings.GiteaBaseUrl = p.woodpeckerInfo.CiForgeInfo.CiForgeUrl
+		}
+
 	}
+	if p.Settings.GiteaBaseUrl == "" {
+		return fmt.Errorf("check args [ %s ] set, now is empty, or can not get from CiForgeType [ gitea ] by env:CI_FORGE_URL", CliNameGiteaBaseUrl)
+	}
+
 	if p.Settings.GiteaApiKey == "" {
 		return fmt.Errorf("check args [ %s ] must set, now is empty", CliNameGiteaApiKey)
 	}
