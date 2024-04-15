@@ -69,7 +69,7 @@ steps:
         - "md5"
         - "sha256"
         - "sha512"
-      # gitea-release-note-by-convention-change: true # 
+      # gitea-release-note-by-convention-change: true # release note by convention change, if true will read change log file, and cover flag settings.gitea-release-note
       gitea-release-title: "dry run release" # release title, if empty will use tag, can be cover by tag name of convention change log
 ```
 
@@ -110,7 +110,7 @@ steps:
         - "md5"
         - "sha256"
         - "sha512"
-      # gitea-release-note-by-convention-change: true # 
+      # gitea-release-note-by-convention-change: true # release note by convention change, if true will read change log file, and cover flag settings.gitea-release-note
       gitea-release-title: "dry run release" # release title, if empty will use tag, can be cover by tag name of convention change log
 ```
 
