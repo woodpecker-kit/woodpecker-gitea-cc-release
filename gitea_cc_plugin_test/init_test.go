@@ -1,10 +1,10 @@
-package plugin_test
+package gitea_cc_plugin_test
 
 import (
 	"fmt"
 	"github.com/sinlov-go/unittest-kit/env_kit"
 	"github.com/sinlov-go/unittest-kit/unittest_file_kit"
-	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/plugin"
+	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/gitea_cc_plugin"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_flag"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
@@ -43,7 +43,7 @@ var (
 	}
 	// mustSetArgsAsEnvList
 	mustSetArgsAsEnvList = []string{
-		//plugin.EnvStepsTransferDemo,
+		//gitea_cc_plugin.EnvStepsTransferDemo,
 	}
 
 	valEnvPluginDebug = false
@@ -57,8 +57,8 @@ func init() {
 
 	envTimeoutSecond = uint(env_kit.FetchOsEnvInt(wd_flag.EnvKeyPluginTimeoutSecond, 10))
 
-	envPaddingLeftMax = env_kit.FetchOsEnvInt(plugin.EnvPrinterPaddingLeftMax, 24)
-	envPrinterPrintKeys = env_kit.FetchOsEnvStringSlice(plugin.EnvPrinterPrintKeys)
+	envPaddingLeftMax = env_kit.FetchOsEnvInt(gitea_cc_plugin.EnvPrinterPaddingLeftMax, 24)
+	envPrinterPrintKeys = env_kit.FetchOsEnvStringSlice(gitea_cc_plugin.EnvPrinterPrintKeys)
 
 	testGoldenKit = unittest_file_kit.NewTestGoldenKit(testBaseFolderPath)
 
@@ -105,14 +105,14 @@ func envMustArgsCheck(t *testing.T) bool {
 	return false
 }
 
-func generateTransferStepsOut(plugin plugin.Plugin, mark string, data interface{}) error {
+func generateTransferStepsOut(plugin gitea_cc_plugin.Plugin, mark string, data interface{}) error {
 	_, err := wd_steps_transfer.Out(plugin.Settings.RootPath, plugin.Settings.StepsTransferPath, plugin.GetWoodPeckerInfo(), mark, data)
 	return err
 }
 
-func mockPluginSettings() plugin.Settings {
+func mockPluginSettings() gitea_cc_plugin.Settings {
 	// all mock settings can set here
-	settings := plugin.Settings{
+	settings := gitea_cc_plugin.Settings{
 		// use env:PLUGIN_DEBUG
 		Debug:             valEnvPluginDebug,
 		TimeoutSecond:     envTimeoutSecond,
@@ -128,8 +128,8 @@ func mockPluginSettings() plugin.Settings {
 
 }
 
-func mockPluginWithSettings(t *testing.T, woodpeckerInfo wd_info.WoodpeckerInfo, settings plugin.Settings) plugin.Plugin {
-	p := plugin.Plugin{
+func mockPluginWithSettings(t *testing.T, woodpeckerInfo wd_info.WoodpeckerInfo, settings gitea_cc_plugin.Settings) gitea_cc_plugin.Plugin {
+	p := gitea_cc_plugin.Plugin{
 		Name:    mockName,
 		Version: mockVersion,
 	}

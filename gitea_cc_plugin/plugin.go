@@ -1,4 +1,4 @@
-package plugin
+package gitea_cc_plugin
 
 import (
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
@@ -6,7 +6,7 @@ import (
 )
 
 type (
-	// Plugin plugin all config
+	// Plugin gitea_cc_plugin all config
 	Plugin struct {
 		Name           string
 		Version        string

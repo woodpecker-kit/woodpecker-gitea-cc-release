@@ -1,4 +1,4 @@
-package plugin
+package gitea_cc_plugin
 
 import (
 	"fmt"
@@ -109,7 +109,7 @@ func checkEnvNotEmpty(keys []string) error {
 
 // doBiz
 //
-//	replace this code with your plugin implementation
+//	replace this code with your gitea_cc_plugin implementation
 func (p *Plugin) doBiz() error {
 
 	if p.Settings.DryRun {

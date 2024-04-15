@@ -1,6 +1,6 @@
 ---
 name: woodpecker-gitea-cc-release
-description: woodpecker plugin template
+description: woodpecker gitea_cc_plugin template
 author: woodpecker-kit
 tags: [ environment, woodpecker-gitea-cc-release ]
 containerImage: woodpecker-kit/woodpecker-gitea-cc-release

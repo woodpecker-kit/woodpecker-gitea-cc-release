@@ -1,7 +1,7 @@
-package plugin_test
+package gitea_cc_plugin_test
 
 import (
-	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/plugin"
+	"github.com/woodpecker-kit/woodpecker-gitea-cc-release/gitea_cc_plugin"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_mock"
@@ -26,7 +26,7 @@ func TestCheckArgsPlugin(t *testing.T) {
 	tests := []struct {
 		name           string
 		woodpeckerInfo wd_info.WoodpeckerInfo
-		settings       plugin.Settings
+		settings       gitea_cc_plugin.Settings
 		workRoot       string
 
 		isDryRun          bool
@@ -80,7 +80,7 @@ func TestPlugin(t *testing.T) {
 	}
 	t.Log("mock Plugin")
 
-	t.Log("mock plugin config")
+	t.Log("mock gitea_cc_plugin config")
 
 	// statusSuccess
 	statusSuccessWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
@@ -109,7 +109,7 @@ func TestPlugin(t *testing.T) {
 	tests := []struct {
 		name           string
 		woodpeckerInfo wd_info.WoodpeckerInfo
-		settings       plugin.Settings
+		settings       gitea_cc_plugin.Settings
 		workRoot       string
 
 		ossTransferKey  string

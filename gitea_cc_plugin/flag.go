@@ -1,4 +1,4 @@
-package plugin
+package gitea_cc_plugin
 
 import (
 	"github.com/urfave/cli/v2"

@@ -1,4 +1,4 @@
-package plugin
+package gitea_cc_plugin
 
 import "github.com/woodpecker-kit/woodpecker-tools/wd_info"
 
@@ -9,7 +9,7 @@ const (
 )
 
 type (
-	// Settings plugin private config
+	// Settings gitea_cc_plugin private config
 	Settings struct {
 		Debug             bool
 		TimeoutSecond     uint
