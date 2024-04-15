@@ -23,6 +23,10 @@ func TestCheckArgsPlugin(t *testing.T) {
 	// baseUrlEmpty
 	baseUrlEmptyWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
 		wd_mock.FastCurrentStatus(wd_info.BuildStatusSuccess),
+		wd_mock.WithCiForgeInfo(
+			// CiForgeType not gitea
+			wd_mock.WithCiForgeType("github"),
+		),
 	)
 	baseUrlEmptySettings := mockPluginSettings()
 	baseUrlEmptySettings.GiteaApiKey = "bar key"

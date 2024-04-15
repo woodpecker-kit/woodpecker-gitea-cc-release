@@ -13,13 +13,9 @@ woodpecker plugin template
 
 ## Settings
 
-| Name                           | Required | Default value | Description                                        |
-|--------------------------------|----------|---------------|----------------------------------------------------|
-| `debug`                        | **no**   | *false*       | open debug log or open by env `PLUGIN_DEBUG`       |
-| `not-empty-envs`               | **no**   | *none*        | use this args, will check env not empty            |
-| `env-printer-print-keys`       | **no**   | *none*        | use this args, will print env by keys              |
-| `env-printer-padding-left-max` | **no**   | *32*          | set env printer padding left max count, minimum 24 |
-| `steps-transfer-demo`          | **no**   | *false*       | use this args, will print steps transfer demo      |
+| Name    | Required | Default value | Description                                  |
+|---------|----------|---------------|----------------------------------------------|
+| `debug` | **no**   | *false*       | open debug log or open by env `PLUGIN_DEBUG` |
 
 **Hide Settings:**
 
@@ -33,6 +29,10 @@ woodpecker plugin template
 
 - workflow with backend `docker`
 
+[![docker hub version semver](https://img.shields.io/docker/v/sinlov/woodpecker-gitea-cc-release?sort=semver)](https://hub.docker.com/r/sinlov/woodpecker-gitea-cc-release/tags?page=1&ordering=last_updated)
+[![docker hub image size](https://img.shields.io/docker/image-size/sinlov/woodpecker-gitea-cc-release)](https://hub.docker.com/r/sinlov/woodpecker-gitea-cc-release)
+[![docker hub image pulls](https://img.shields.io/docker/pulls/sinlov/woodpecker-gitea-cc-release)](https://hub.docker.com/r/sinlov/woodpecker-gitea-cc-release/tags?page=1&ordering=last_updated)
+
 ```yml
 labels:
   backend: docker
@@ -41,17 +41,7 @@ steps:
     image: sinlov/woodpecker-gitea-cc-release:latest
     pull: false
     settings:
-      # debug: true
-      # not-empty-envs: # check env not empty v1.7.+ support
-      #   - WOODPECKER_AGENT_USER_HOME
-      env-printer-print-keys: # print env keys
-        - GOPATH
-        - GOPRIVATE
-        - GOBIN
-        # env-printer-padding-left-max: # padding left max
-        ## https://woodpecker-ci.org/docs/usage/secrets
-        # from_secret: secret_printer_padding_left_max
-      steps-transfer-demo: false # open this show steps transfer demo
+    # debug: true
 ```
 
 - workflow with backend `local`, must install at local and effective at evn `PATH`
@@ -61,6 +51,8 @@ steps:
 ```bash
 go install -a github.com/woodpecker-kit/woodpecker-gitea-cc-release/cmd/woodpecker-gitea-cc-release@latest
 ```
+
+[![GitHub release)](https://img.shields.io/github/v/release/woodpecker-kit/woodpecker-gitea-cc-release)](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/releases)
 
 - install at ${GOPATH}/bin, v1.0.0
 
@@ -75,15 +67,7 @@ steps:
   woodpecker-gitea-cc-release:
     image: woodpecker-gitea-cc-release
     settings:
-      # debug: true
-      # not-empty-envs: # check env not empty v1.7.+ support
-      #   - WOODPECKER_AGENT_USER_HOME
-      env-printer-print-keys: # print env keys
-        - GOPATH
-        - GOPRIVATE
-        - GOBIN
-      env-printer-padding-left-max: 36 # padding left max
-      steps-transfer-demo: false # open this show steps transfer demo
+    # debug: true
 ```
 
 ## Notes
