@@ -11,6 +11,15 @@ import (
 )
 
 const (
+	CliNameGiteaApiKey = "settings.gitea-api-key"
+	EnvGiteaApiKey     = "PLUGIN_GITEA_API_KEY"
+
+	CliNameGiteaBaseUrl = "settings.gitea-base-url"
+	EnvGiteaBaseUrl     = "PLUGIN_GITEA_BASE_URL"
+
+	CliNameGiteaInsecure = "settings.gitea-insecure"
+	EnvGiteaInsecure     = "PLUGIN_GITEA_INSECURE"
+
 	CliNameGiteaDryRun = "settings.gitea-dry-run"
 	EnvGiteaDryRun     = "PLUGIN_GITEA_DRY_RUN"
 
@@ -20,20 +29,11 @@ const (
 	CliNameGiteaPrerelease = "settings.gitea-prerelease"
 	EnvGiteaPrerelease     = "PLUGIN_GITEA_PRERELEASE"
 
-	CliNameGiteaBaseUrl = "settings.gitea-base-url"
-	EnvGiteaBaseUrl     = "PLUGIN_GITEA_BASE_URL"
-
-	CliNameGiteaInsecure = "settings.gitea-insecure"
-	EnvGiteaInsecure     = "PLUGIN_GITEA_INSECURE"
-
-	CliNameGiteaApiKey = "settings.gitea-api-key"
-	EnvGiteaApiKey     = "PLUGIN_GITEA_API_KEY"
+	CliNameGiteaReleaseFileRootPath = "settings.gitea-release-file-root-path"
+	EnvGiteaReleaseFileRootPath     = "PLUGIN_GITEA_RELEASE_FILE_ROOT_PATH"
 
 	CliNameGiteaReleaseFilesGlobs = "settings.gitea-release-files-globs"
 	EnvGiteaReleaseFilesGlobs     = "PLUGIN_GITEA_RELEASE_FILES_GLOBS"
-
-	CliNameGiteaReleaseFileRootPath = "settings.gitea-release-file-root-path"
-	EnvGiteaReleaseFileRootPath     = "PLUGIN_GITEA_RELEASE_FILE_ROOT_PATH"
 
 	CliNameGiteaReleaseFileExistsDo = "settings.gitea-release-file-exists-do"
 	EnvGiteaReleaseFileExistsDo     = "PLUGIN_GITEA_RELEASE_FILE_EXISTS_DO"
@@ -61,10 +61,27 @@ const (
 // Other modules also have flags
 func GlobalFlag() []cli.Flag {
 	return []cli.Flag{
+		&cli.StringFlag{
+			Name:    CliNameGiteaApiKey,
+			Usage:   "gitea api key, Required",
+			EnvVars: []string{EnvGiteaApiKey},
+		},
+		&cli.StringFlag{
+			Name:    CliNameGiteaBaseUrl,
+			Usage:   fmt.Sprintf("gitea base url, when `%s` is `gitea`, and this flag is empty, will try get from `%s`", wd_flag.EnvKeyCiForgeType, wd_flag.EnvKeyCiForgeUrl),
+			EnvVars: []string{EnvGiteaBaseUrl},
+		},
+		&cli.BoolFlag{
+			Name:    CliNameGiteaInsecure,
+			Usage:   "visit base-url via insecure https protocol",
+			Value:   false,
+			EnvVars: []string{EnvGiteaInsecure},
+		},
+
 		&cli.BoolFlag{
 			Name:    CliNameGiteaDryRun,
 			Usage:   "gitea release dry run",
-			Value:   true,
+			Value:   false,
 			EnvVars: []string{EnvGiteaDryRun},
 		},
 		&cli.BoolFlag{
@@ -79,33 +96,17 @@ func GlobalFlag() []cli.Flag {
 			Value:   true,
 			EnvVars: []string{EnvGiteaPrerelease},
 		},
-		&cli.StringFlag{
-			Name:    CliNameGiteaBaseUrl,
-			Usage:   fmt.Sprintf("gitea base url, when `%s` is [ gitea ] , set this flag empty, will try get from `%s`", wd_flag.EnvKeyCiForgeType, wd_flag.EnvKeyCiForgeUrl),
-			EnvVars: []string{EnvGiteaBaseUrl},
-		},
-		&cli.BoolFlag{
-			Name:    CliNameGiteaInsecure,
-			Usage:   "visit base-url via insecure https protocol",
-			Value:   false,
-			EnvVars: []string{EnvGiteaInsecure},
-		},
-		&cli.StringFlag{
-			Name:    CliNameGiteaApiKey,
-			Usage:   "gitea api key, Required",
-			EnvVars: []string{EnvGiteaApiKey},
-		},
 
 		// release files
-		&cli.StringSliceFlag{
-			Name:    CliNameGiteaReleaseFilesGlobs,
-			Usage:   "release as files by glob pattern, if empty will skip release files",
-			EnvVars: []string{EnvGiteaReleaseFilesGlobs},
-		},
 		&cli.StringFlag{
 			Name:    CliNameGiteaReleaseFileRootPath,
 			Usage:   "release file root path, if empty will use workspace, most of use project root path",
 			EnvVars: []string{EnvGiteaReleaseFileRootPath},
+		},
+		&cli.StringSliceFlag{
+			Name:    CliNameGiteaReleaseFilesGlobs,
+			Usage:   "release as files by glob pattern, if empty will skip release files",
+			EnvVars: []string{EnvGiteaReleaseFilesGlobs},
 		},
 		&cli.StringFlag{
 			Name:    CliNameGiteaReleaseFileExistsDo,
@@ -148,7 +149,7 @@ func HideGlobalFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.UintFlag{
 			Name:    CliNameGiteaTimeoutSecond,
-			Usage:   "gitea release timeout second, default 60, less 30",
+			Usage:   "gitea release api timeout second, default 60, less 30",
 			Value:   60,
 			Hidden:  true,
 			EnvVars: []string{EnvGiteaTimeoutSecond},
