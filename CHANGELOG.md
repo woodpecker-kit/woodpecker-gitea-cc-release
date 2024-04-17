@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.1.0](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.0.0...v1.1.0) (2024-04-18)
+
+### ✨ Features
+
+* `github.com/sinlov-go/gitea-client-wrapper` pkg for use GiteaTokenClient to management ([bb72c317](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/bb72c31771c11850c5f1527e2cf06c4fc176d616))
+
+### 📝 Documentation
+
+* update doc of usage ([7541fd3b](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/7541fd3b31a89e5f487aadbd55bc7dea8aea20a2))
+
 ## 1.0.0 (2024-04-16)
 
 ### ✨ Features
