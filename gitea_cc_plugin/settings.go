@@ -5,6 +5,8 @@ const (
 	FileExistsDoOverwrite = "overwrite"
 	FileExistsDoSkip      = "skip"
 
+	defaultTitle = "Release title"
+
 	// versionRcFileName read convention change log config
 	versionRcFileName = ".versionrc"
 

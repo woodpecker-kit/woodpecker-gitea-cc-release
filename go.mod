@@ -3,11 +3,12 @@ module github.com/woodpecker-kit/woodpecker-gitea-cc-release
 go 1.19
 
 require (
-	code.gitea.io/sdk/gitea v0.17.1
+	code.gitea.io/sdk/gitea v0.18.0
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/convention-change/convention-change-log v1.7.0
 	github.com/gookit/color v1.5.4
 	github.com/joho/godotenv v1.5.1
+	github.com/sinlov-go/gitea-client-wrapper v1.0.0
 	github.com/sinlov-go/go-common-lib v1.7.0
 	github.com/sinlov-go/unittest-kit v1.1.0
 	github.com/stretchr/testify v1.9.0
