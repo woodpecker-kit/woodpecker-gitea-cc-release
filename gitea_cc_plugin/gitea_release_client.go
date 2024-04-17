@@ -2,18 +2,11 @@ package gitea_cc_plugin
 
 import (
 	"code.gitea.io/sdk/gitea"
-	"context"
-	"crypto/tls"
 	"fmt"
+	"github.com/sinlov-go/gitea-client-wrapper/gitea_token_client"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_short_info"
-	"net"
-	"net/http"
-	"net/http/cookiejar"
-	"strings"
-	"sync"
-	"time"
 )
 
 var (
@@ -22,24 +15,12 @@ var (
 
 // Release holds ties the drone env data and gitea client together.
 type releaseClient struct {
-	client *gitea.Client
-	debug  bool
+	gitea_token_client.GiteaTokenClient
+
 	dryRun bool
-
-	url        string
-	ctx        context.Context
-	mutex      *sync.RWMutex
-	httpClient *http.Client
-
-	accessToken string // this not in RWLock
-	username    string
-	password    string
-	otp         string
-	sudo        string
-
-	owner string
-	repo  string
-	tag   string
+	owner  string
+	repo   string
+	tag    string
 	// tagTarget
 	//is the branch or commit sha to tag
 	tagTarget  string
@@ -63,12 +44,6 @@ type GiteaPackageInfo struct {
 
 type PluginGiteaReleaseClient interface {
 	GetUploadDesc() string
-
-	SetOTP(otp string)
-
-	SetSudo(sudo string)
-
-	SetBasicAuth(username, password string)
 
 	Title() string
 
@@ -118,52 +93,17 @@ func NewReleaseClientByWoodpeckerShort(info wd_short_info.WoodpeckerInfoShort, c
 		uploadDesc = "PLUGIN_RELEASE_GITEA_FILES not setting, skip upload files"
 	}
 
-	httpClient := &http.Client{
-		Timeout: time.Duration(config.GiteaTimeoutSecond) * time.Second,
-	}
-	if config.GiteaInsecure {
-		cookieJar, _ := cookiejar.New(nil)
-		httpClient = &http.Client{
-			Jar: cookieJar,
-			Transport: &http.Transport{
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-				DialContext: (&net.Dialer{
-					Timeout:   time.Duration(config.TimeoutSecond*3) * time.Second,
-					KeepAlive: time.Duration(config.TimeoutSecond*3) * time.Second,
-				}).DialContext,
-				TLSHandshakeTimeout:   time.Duration(config.TimeoutSecond) * time.Second,
-				ResponseHeaderTimeout: time.Duration(config.TimeoutSecond) * time.Second,
-				ExpectContinueTimeout: 1 * time.Second,
-			},
-			Timeout: time.Duration(config.GiteaTimeoutSecond) * time.Second,
+	// if the title was not provided via we use the tag instead
+	if config.GiteaReleaseTitle == "" {
+		if info.Build.Event == wd_info.EventPipelineTag {
+			config.GiteaReleaseTitle = info.Build.Tag
+		} else {
+			config.GiteaReleaseTitle = defaultTitle
 		}
 	}
 
-	client, errNewClient := gitea.NewClient(config.GiteaBaseUrl,
-		gitea.SetToken(config.GiteaApiKey),
-		gitea.SetHTTPClient(httpClient),
-	)
-	if errNewClient != nil {
-		return nil, fmt.Errorf("failed to create gitea client: %s", errNewClient)
-	}
-	wd_log.Debug("gitea client created success")
-
-	// if the title was not provided via we use the tag instead
-	if config.GiteaReleaseTitle == "" {
-		config.GiteaReleaseTitle = info.Build.Tag
-	}
-
-	return &releaseClient{
-		client: client,
-		debug:  config.Debug,
-		dryRun: config.DryRun,
-
-		url:         strings.TrimSuffix(config.GiteaBaseUrl, "/"),
-		ctx:         context.Background(),
-		mutex:       &sync.RWMutex{},
-		httpClient:  httpClient,
-		accessToken: config.GiteaApiKey,
-
+	rc := &releaseClient{
+		dryRun:       config.DryRun,
 		owner:        info.Repo.OwnerName,
 		repo:         info.Repo.ShortName,
 		tag:          info.Build.Tag,
@@ -176,5 +116,11 @@ func NewReleaseClientByWoodpeckerShort(info wd_short_info.WoodpeckerInfoShort, c
 
 		uploadFilePaths: uploadFiles,
 		uploadDesc:      uploadDesc,
-	}, nil
+	}
+	errNewClient := rc.NewClientWithHttpTimeout(config.GiteaBaseUrl, config.GiteaApiKey, config.GiteaTimeoutSecond, config.GiteaInsecure)
+	if errNewClient != nil {
+		return nil, errNewClient
+	}
+	wd_log.Debug("gitea client created success")
+	return rc, nil
 }

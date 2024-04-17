@@ -13,30 +13,6 @@ func (r *releaseClient) GetUploadDesc() string {
 	return r.uploadDesc
 }
 
-// SetOTP sets OTP for 2FA
-func (r *releaseClient) SetOTP(otp string) {
-	r.mutex.Lock()
-	r.otp = otp
-	r.client.SetOTP(otp)
-	r.mutex.Unlock()
-}
-
-// SetSudo sets username to impersonate.
-func (r *releaseClient) SetSudo(sudo string) {
-	r.mutex.Lock()
-	r.sudo = sudo
-	r.client.SetSudo(sudo)
-	r.mutex.Unlock()
-}
-
-// SetBasicAuth sets username and password
-func (r *releaseClient) SetBasicAuth(username, password string) {
-	r.mutex.Lock()
-	r.username, r.password = username, password
-	r.client.SetBasicAuth(username, password)
-	r.mutex.Unlock()
-}
-
 func (r *releaseClient) Title() string {
 	return r.title
 }
@@ -65,7 +41,7 @@ func (r *releaseClient) BuildRelease() (*gitea.Release, error) {
 
 	if r.dryRun {
 		wd_log.Infof("~> dry run mode open, not creating release\n")
-		wd_log.Infof("-> try to create release %s/%s/%s\n", r.url, r.owner, r.repo)
+		wd_log.Infof("-> try to create release %s/%s/%s\n", r.GetBaseUrl(), r.owner, r.repo)
 		return &gitea.Release{
 			ID: -1,
 		}, nil
@@ -102,7 +78,7 @@ func (r *releaseClient) UploadFiles(releaseID int64) error {
 		return nil
 	}
 
-	attachments, _, err := r.client.ListReleaseAttachments(r.owner, r.repo, releaseID, gitea.ListReleaseAttachmentsOptions{})
+	attachments, _, err := r.GiteaClient().ListReleaseAttachments(r.owner, r.repo, releaseID, gitea.ListReleaseAttachmentsOptions{})
 	if err != nil {
 		return fmt.Errorf("failed to fetch existing assets: %s", err)
 	}
@@ -140,7 +116,7 @@ files:
 
 		for _, attachment := range attachments {
 			if attachment.Name == path.Base(file) {
-				if _, err := r.client.DeleteReleaseAttachment(r.owner, r.repo, releaseID, attachment.ID); err != nil {
+				if _, err := r.GiteaClient().DeleteReleaseAttachment(r.owner, r.repo, releaseID, attachment.ID); err != nil {
 					return fmt.Errorf("failed to delete %s artifact: %s", file, err)
 				}
 
@@ -148,7 +124,7 @@ files:
 			}
 		}
 
-		if _, _, err = r.client.CreateReleaseAttachment(r.owner, r.repo, releaseID, handle, path.Base(file)); err != nil {
+		if _, _, err = r.GiteaClient().CreateReleaseAttachment(r.owner, r.repo, releaseID, handle, path.Base(file)); err != nil {
 			return fmt.Errorf("failed to upload %s artifact: %s", file, err)
 		}
 
@@ -159,7 +135,7 @@ files:
 }
 
 func (r *releaseClient) getRelease() (*gitea.Release, error) {
-	releases, _, err := r.client.ListReleases(r.owner, r.repo, gitea.ListReleasesOptions{})
+	releases, _, err := r.GiteaClient().ListReleases(r.owner, r.repo, gitea.ListReleasesOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +158,7 @@ func (r *releaseClient) newRelease() (*gitea.Release, error) {
 		Note:         r.note,
 	}
 
-	release, _, err := r.client.CreateRelease(r.owner, r.repo, c)
+	release, _, err := r.GiteaClient().CreateRelease(r.owner, r.repo, c)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create release: %s", err)
 	}
