@@ -11,6 +11,19 @@ icon: https://raw.githubusercontent.com/woodpecker-kit/woodpecker-gitea-cc-relea
 
 woodpecker plugin for https://about.gitea.com/ and conventional commits logs to make release
 
+## Features
+
+- [x] support [gitea](https://gitea.io/) version `gitea >= 1.11`
+- [x] dry-run mode
+- [X] gitea client token use [Access Token](https://docs.gitea.com/development/api-usage#authentication)
+- [X] upload release files by glob pattern
+- [X] support generate check sum file by `md5 sha1 sha256 sha512 crc32 ...`
+  - [x] check sum file support tools as `md5sum sha1sum sha256sum sha512sum`
+  - [x] generate file base name dot not duplicates by base name
+- [X] support [conventional-commits](https://www.conventionalcommits.org/) log from `CHANGELOG.md`
+  - from lib [github.com/convention-change/convention-change-log](https://github.com/convention-change/convention-change-log)
+  - the same support [www.contributor-covenant.org](https://www.contributor-covenant.org/) change logs
+
 ## Settings
 
 | Name                                      | Required | Default value  | Description                                                                                                      |

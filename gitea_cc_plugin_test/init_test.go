@@ -43,18 +43,19 @@ var (
 		gitea_cc_plugin.EnvGiteaApiKey,
 	}
 
-	valEnvTimeoutSecond          uint
-	valEnvPluginDebug            = false
-	valEnvGiteaDryRun            = true
-	valEnvGiteaDraft             = false
-	valEnvGiteaPrerelease        = true
-	valEnvGiteaTimeoutSecond     uint
-	valEnvGiteaBaseUrl           = ""
-	valEnvGiteaInsecure          = false
-	valEnvGiteaApiKey            = ""
-	valEnvGiteaReleaseFilesGlobs []string
-	valEnvGiteaFileExistsDo      = gitea_cc_plugin.EnvGiteaDraft
-	valEnvGiteaFilesChecksum     []string
+	valEnvTimeoutSecond            uint
+	valEnvPluginDebug              = false
+	valEnvGiteaDryRun              = true
+	valEnvGiteaDraft               = false
+	valEnvGiteaPrerelease          = true
+	valEnvGiteaTimeoutSecond       uint
+	valEnvGiteaBaseUrl             = ""
+	valEnvGiteaInsecure            = false
+	valEnvGiteaApiKey              = ""
+	valEnvGiteaReleaseFileRootPath = ""
+	valEnvGiteaReleaseFilesGlobs   []string
+	valEnvGiteaFileExistsDo        = gitea_cc_plugin.EnvGiteaDraft
+	valEnvGiteaFilesChecksum       []string
 )
 
 func init() {
@@ -74,6 +75,7 @@ func init() {
 	valEnvGiteaBaseUrl = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaBaseUrl, "")
 	valEnvGiteaInsecure = env_kit.FetchOsEnvBool(gitea_cc_plugin.EnvGiteaInsecure, false)
 	valEnvGiteaApiKey = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaApiKey, "")
+	valEnvGiteaReleaseFileRootPath = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaReleaseFileRootPath, "")
 	valEnvGiteaReleaseFilesGlobs = env_kit.FetchOsEnvStringSlice(gitea_cc_plugin.EnvGiteaReleaseFilesGlobs)
 	valEnvGiteaFileExistsDo = env_kit.FetchOsEnvStr(gitea_cc_plugin.EnvGiteaReleaseFileExistsDo, gitea_cc_plugin.FileExistsDoFail)
 	valEnvGiteaFilesChecksum = env_kit.FetchOsEnvStringSlice(gitea_cc_plugin.EnvGiteaFilesChecksum)
@@ -140,6 +142,7 @@ func mockPluginSettings() gitea_cc_plugin.Settings {
 	settings.GiteaBaseUrl = valEnvGiteaBaseUrl
 	settings.GiteaInsecure = valEnvGiteaInsecure
 	settings.GiteaApiKey = valEnvGiteaApiKey
+	settings.GiteaReleaseFileGlobRootPath = valEnvGiteaReleaseFileRootPath
 	settings.GiteaReleaseFilesGlobs = valEnvGiteaReleaseFilesGlobs
 	settings.GiteaReleaseFileExistsDo = valEnvGiteaFileExistsDo
 	if settings.GiteaReleaseFileExistsDo == "" {
@@ -163,6 +166,11 @@ func mockPluginWithSettings(t *testing.T, woodpeckerInfo wd_info.WoodpeckerInfo,
 
 	if p.ShortInfo().Build.WorkSpace != "" {
 		settings.RootPath = p.ShortInfo().Build.WorkSpace
+	}
+
+	// set default GiteaReleaseFileGlobRootPath
+	if settings.GiteaReleaseFileGlobRootPath == "" {
+		settings.GiteaReleaseFileGlobRootPath = settings.RootPath
 	}
 
 	p.Settings = settings

@@ -7,6 +7,8 @@ import (
 	"github.com/woodpecker-kit/woodpecker-tools/wd_info"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_short_info"
+	"path/filepath"
+	"strings"
 )
 
 var (
@@ -78,6 +80,11 @@ func NewReleaseClientByWoodpeckerShort(info wd_short_info.WoodpeckerInfoShort, c
 			return nil, fmt.Errorf("not found files by globs: %v , at path: %s", config.GiteaReleaseFilesGlobs, config.GiteaReleaseFileGlobRootPath)
 		}
 
+		repetitionFiles := findUploadFileRepetitionByBaseName(findFiles)
+		if len(repetitionFiles) > 0 {
+			return nil, fmt.Errorf("found files repetition by base name, now not support upload, repetition path as\n%s", strings.Join(repetitionFiles, "\n"))
+		}
+
 		uploadFiles = findFiles
 
 		if len(config.GiteaFilesChecksum) > 0 {
@@ -123,4 +130,20 @@ func NewReleaseClientByWoodpeckerShort(info wd_short_info.WoodpeckerInfoShort, c
 	}
 	wd_log.Debug("gitea client created success")
 	return rc, nil
+}
+
+// findUploadFileRepetitionByBaseName find upload file base name repetition
+// return duplicates file full path, len 0 is not find
+func findUploadFileRepetitionByBaseName(files []string) []string {
+	seen := make(map[string]bool)
+	var duplicates []string
+	for _, fileFullPath := range files {
+		fileBaseName := filepath.Base(fileFullPath)
+		if seen[fileBaseName] {
+			duplicates = append(duplicates, fileFullPath)
+		} else {
+			seen[fileBaseName] = true
+		}
+	}
+	return duplicates
 }

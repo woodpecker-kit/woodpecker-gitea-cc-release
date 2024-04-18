@@ -6,7 +6,6 @@ import (
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_mock"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_short_info"
-	"path/filepath"
 	"testing"
 )
 
@@ -132,17 +131,28 @@ func TestPlugin(t *testing.T) {
 
 	t.Log("mock gitea_cc_plugin config")
 
-	testDataPathRoot, errTestDataPathRoot := testGoldenKit.GetOrCreateTestDataFullPath("plugin_test")
+	testDataPathRoot, errTestDataPathRoot := testGoldenKit.GetOrCreateTestDataFullPath("TestPlugin")
 	if errTestDataPathRoot != nil {
 		t.Fatal(errTestDataPathRoot)
 	}
 
 	// tagPipeline
 	tagPipelineWoodpeckerInfo := *wd_mock.NewWoodpeckerInfo(
-		wd_mock.FastWorkSpace(filepath.Join(testDataPathRoot, "tagPipeline")),
+		wd_mock.FastWorkSpace(testDataPathRoot),
 		wd_mock.FastTag("v1.0.0", "new tag"),
 	)
 	tagPipelineSettings := mockPluginSettings()
+
+	globs, err := mockUploadFiles(t)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tagPipelineSettings.GiteaReleaseFilesGlobs = globs
+	tagPipelineSettings.GiteaFilesChecksum = []string{
+		gitea_cc_plugin.CheckSumMd5,
+		gitea_cc_plugin.CheckSumSha256,
+		gitea_cc_plugin.CheckSumSha512,
+	}
 
 	tests := []struct {
 		name           string
@@ -184,4 +194,37 @@ func TestPlugin(t *testing.T) {
 			}
 		})
 	}
+}
+
+func mockUploadFiles(t *testing.T) ([]string, error) {
+
+	var globsFiles = make(map[string][]string)
+	globsFiles["*.json.golden"] = []string{
+		"foo.json",
+		"bar.json",
+	}
+
+	type testData struct {
+		Name string
+	}
+	var fooData = testData{
+		Name: "foo",
+	}
+
+	for _, values := range globsFiles {
+		for _, value := range values {
+			fooData.Name = value
+			err := testGoldenKit.GoldenDataSaveFast(t, fooData, value)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	var keys []string
+	for k := range globsFiles {
+		keys = append(keys, k)
+	}
+
+	return keys, nil
 }
