@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.1.2](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.1.1...v1.1.2) (2024-04-18)
+
+### 🐛 Bug Fixes
+
+* fix file check sum error ([4a1e9ebf](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/4a1e9ebfbed49afd36aa6bac484d9901a3664bdb)), fix [#9](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/issues/9)
+
 ## [1.1.1](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.1.0...v1.1.1) (2024-04-18)
 
 ## [1.1.0](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.0.0...v1.1.0) (2024-04-18)
