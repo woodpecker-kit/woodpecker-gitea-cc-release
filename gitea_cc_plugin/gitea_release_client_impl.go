@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/woodpecker-kit/woodpecker-tools/wd_log"
 	"os"
-	"path"
 	"path/filepath"
 )
 
@@ -92,9 +91,9 @@ files:
 			if attachment.Name == filepath.Base(filePath) {
 				switch r.fileExistsDo {
 				case FileExistsDoOverwrite:
-					// do nothing
+					// do nothing now we will delete the old file and upload the new one
 				case FileExistsDoFail:
-					return fmt.Errorf("asset file %s already exists", path.Base(filePath))
+					return fmt.Errorf("asset file %s already exists", filepath.Base(filePath))
 				case FileExistsDoSkip:
 					wd_log.Infof("skipping pre-existing %s artifact\n", attachment.Name)
 					continue files
@@ -114,21 +113,23 @@ files:
 			return fmt.Errorf("failed to read %s artifact: %s", file, errOpen)
 		}
 
+		fileBaseName := filepath.Base(file)
+
 		for _, attachment := range attachments {
-			if attachment.Name == path.Base(file) {
+			if attachment.Name == fileBaseName {
 				if _, err := r.GiteaClient().DeleteReleaseAttachment(r.owner, r.repo, releaseID, attachment.ID); err != nil {
-					return fmt.Errorf("failed to delete %s artifact: %s", file, err)
+					return fmt.Errorf("failed to delete file base name: %s artifact: %s", fileBaseName, err)
 				}
 
 				wd_log.Infof("successfully deleted old attachment.ID[ %v ] artifact %s\n", attachment.ID, attachment.Name)
 			}
 		}
 
-		if _, _, err = r.GiteaClient().CreateReleaseAttachment(r.owner, r.repo, releaseID, handle, path.Base(file)); err != nil {
-			return fmt.Errorf("failed to upload %s artifact: %s", file, err)
+		if _, _, err = r.GiteaClient().CreateReleaseAttachment(r.owner, r.repo, releaseID, handle, fileBaseName); err != nil {
+			return fmt.Errorf("failed to upload file base name: %s artifact: %s", fileBaseName, err)
 		}
 
-		wd_log.Infof("successfully uploaded artifact: %s \n", file)
+		wd_log.Infof("successfully uploaded artifact file name [ %s ] path: %s \n", fileBaseName, file)
 	}
 
 	return nil

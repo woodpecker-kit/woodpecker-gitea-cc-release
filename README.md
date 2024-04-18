@@ -30,9 +30,12 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 - [x] dry-run mode
 - [X] gitea client token use [Access Token](https://docs.gitea.com/development/api-usage#authentication)
 - [X] upload release files by glob pattern
-- [X] support upload check sum file
-- [X] support [conventional-commits](https://www.conventionalcommits.org/) log from
-  lib [github.com/convention-change/convention-change-log](https:// github.com/convention-change/convention-change-log)
+- [X] support generate check sum file by `md5 sha1 sha256 sha512 crc32 ...`
+    - [x] check sum file support tools as `md5sum sha1sum sha256sum sha512sum`
+    - [x] generate file base name dot not duplicates by base name
+- [X] support [conventional-commits](https://www.conventionalcommits.org/) log from `CHANGELOG.md`
+  - from lib [github.com/convention-change/convention-change-log](https://github.com/convention-change/convention-change-log)
+  - the same support [www.contributor-covenant.org](https://www.contributor-covenant.org/) change logs
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
 
