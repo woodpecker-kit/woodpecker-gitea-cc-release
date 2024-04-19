@@ -36,6 +36,8 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 - [X] support [conventional-commits](https://www.conventionalcommits.org/) log from `CHANGELOG.md`
   - from lib [github.com/convention-change/convention-change-log](https://github.com/convention-change/convention-change-log)
   - the same support [www.contributor-covenant.org](https://www.contributor-covenant.org/) change logs
+- [x] docker platform support (v1.2.+)
+  -  `linux/amd64 linux/386 linux/arm64/v8 linux/arm/v7 linux/ppc64le linux/s390x` 
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
 

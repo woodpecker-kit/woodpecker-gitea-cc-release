@@ -23,11 +23,15 @@ target "image-local" {
 
 // must check by parent image support multi-platform
 // doc: https://docs.docker.com/reference/cli/docker/buildx/build/#platform
-// most of can as: linux/amd64 linux/386 linux/arm64/v8 linux/arm/v7 linux/arm/v6 linux/ppc64le linux/s390x
+// golang with alpine can use as: linux/amd64 linux/386 linux/arm64/v8 linux/arm/v7 linux/ppc64le linux/s390x
 target "image-all" {
   inherits = ["image"]
   platforms = [
     "linux/amd64",
-    "linux/arm64/v8"
+    "linux/386",
+    "linux/arm64/v8",
+    "linux/arm/v7",
+    "linux/ppc64le",
+    "linux/s390x",
   ]
 }
