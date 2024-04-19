@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.2.0](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.1.2...v1.2.0) (2024-04-19)
+
+### ✨ Features
+
+* docker platform `linux/amd64 linux/386 linux/arm64/v8 linux/arm/v7 linux/ppc64le linux/s390x` ([701460ef](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/701460ef896a5ff2725ca212428ffad0583fcfbf)), feat [#11](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/issues/11)
+
 ## [1.1.2](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.1.1...v1.1.2) (2024-04-18)
 
 ### 🐛 Bug Fixes
