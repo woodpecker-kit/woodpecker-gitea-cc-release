@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.2.1](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.2.0...v1.2.1) (2024-04-21)
+
 ## [1.2.0](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.1.2...v1.2.0) (2024-04-19)
 
 ### ✨ Features
