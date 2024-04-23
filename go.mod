@@ -8,7 +8,7 @@ require (
 	github.com/convention-change/convention-change-log v1.7.0
 	github.com/gookit/color v1.5.4
 	github.com/joho/godotenv v1.5.1
-	github.com/sinlov-go/gitea-client-wrapper v1.0.0
+	github.com/sinlov-go/gitea-client-wrapper v1.1.0
 	github.com/sinlov-go/go-common-lib v1.7.0
 	github.com/sinlov-go/unittest-kit v1.1.0
 	github.com/stretchr/testify v1.9.0
