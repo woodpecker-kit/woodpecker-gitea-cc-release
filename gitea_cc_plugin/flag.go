@@ -183,12 +183,14 @@ func BindCliFlags(c *cli.Context,
 		StepsOutDisable:   stepsOutDisable,
 		RootPath:          rootPath,
 
+		GiteaBaseUrl:       c.String(CliNameGiteaBaseUrl),
+		GiteaInsecure:      c.Bool(CliNameGiteaInsecure),
+		GiteaApiKey:        c.String(CliNameGiteaApiKey),
+		GiteaTimeoutSecond: c.Uint(CliNameGiteaTimeoutSecond),
+
+		GiteaPrerelease: c.Bool(CliNameGiteaPrerelease),
 		DryRun:          c.Bool(CliNameGiteaDryRun),
 		GiteaDraft:      c.Bool(CliNameGiteaDraft),
-		GiteaPrerelease: c.Bool(CliNameGiteaPrerelease),
-		GiteaBaseUrl:    c.String(CliNameGiteaBaseUrl),
-		GiteaInsecure:   c.Bool(CliNameGiteaInsecure),
-		GiteaApiKey:     c.String(CliNameGiteaApiKey),
 
 		GiteaReleaseFilesGlobs:       c.StringSlice(CliNameGiteaReleaseFilesGlobs),
 		GiteaReleaseFileGlobRootPath: releaseFileRootPath,

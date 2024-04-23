@@ -23,13 +23,14 @@ type (
 		StepsOutDisable   bool
 		RootPath          string
 
-		DryRun             bool
-		GiteaDraft         bool
-		GiteaPrerelease    bool
-		GiteaTimeoutSecond uint
 		GiteaBaseUrl       string
 		GiteaInsecure      bool
 		GiteaApiKey        string
+		GiteaTimeoutSecond uint
+
+		DryRun          bool
+		GiteaDraft      bool
+		GiteaPrerelease bool
 
 		GiteaReleaseFilesGlobs       []string
 		GiteaReleaseFileGlobRootPath string
