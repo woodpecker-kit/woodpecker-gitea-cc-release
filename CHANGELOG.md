@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.2.2](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.2.1...v1.2.2) (2024-04-23)
+
+### 🐛 Bug Fixes
+
+* flag `settngs.gitea-timeout-second` not effective ([358856bc](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/358856bc1db6cac330dc356b84f6d9946c582796)), fix [#15](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/issues/15)
+
 ## [1.2.1](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.2.0...v1.2.1) (2024-04-21)
 
 ## [1.2.0](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.1.2...v1.2.0) (2024-04-19)
