@@ -1,6 +1,6 @@
 module github.com/woodpecker-kit/woodpecker-gitea-cc-release
 
-go 1.19
+go 1.21
 
 require (
 	code.gitea.io/sdk/gitea v0.18.0
