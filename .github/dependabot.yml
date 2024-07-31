@@ -10,6 +10,9 @@ updates:
     schedule:
       interval: "monthly"
       day: "sunday"
+    commit-message:
+      prefix: "ci(action)"
+      prefix-development: "build(action)"
     open-pull-requests-limit: 10
 #     ignore:
 #       - dependency-name: golangci/golangci-lint-action
@@ -20,6 +23,9 @@ updates:
     schedule:
       interval: "weekly"
       day: "sunday"
+    commit-message:
+      prefix: "ci(deps)"
+      prefix-development: "build(go)"
     open-pull-requests-limit: 10
 #    ignore:
 #    - dependency-name: foo
