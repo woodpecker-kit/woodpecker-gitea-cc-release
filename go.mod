@@ -5,7 +5,7 @@ go 1.21
 require (
 	code.gitea.io/sdk/gitea v0.19.0
 	github.com/Masterminds/semver/v3 v3.3.0
-	github.com/convention-change/convention-change-log v1.8.1
+	github.com/convention-change/convention-change-log v1.8.2
 	github.com/gookit/color v1.5.4
 	github.com/joho/godotenv v1.5.1
 	github.com/sinlov-go/gitea-client-wrapper v1.1.0
