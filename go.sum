@@ -97,8 +97,8 @@ github.com/sinlov-go/go-git-tools v1.13.0 h1:ty+/9O9eTYMAUeYtZDtW/n2YjhkQhgSXDhx
 github.com/sinlov-go/go-git-tools v1.13.0/go.mod h1:p5KlfInd3XjQgZtuGavWfgs5LgB1EEzMMivwt/sMkRE=
 github.com/sinlov-go/sample-markdown v1.4.0 h1:79fVH3Asz7cGvPuPkqMVtPV8FVqoAymqMW0z3extQBU=
 github.com/sinlov-go/sample-markdown v1.4.0/go.mod h1:F9jkQUrZIHLDr2j31PhFbpJUQpwp8CD48QA9DGPP1bY=
-github.com/sinlov-go/unittest-kit v1.1.1 h1:Xuml8PGkxdwzRQxlO37q/zvE9fHHQlIDM0KZXhE77Oc=
-github.com/sinlov-go/unittest-kit v1.1.1/go.mod h1:u/+OWj6Wm1mnfMRS8FhWjrg5aZ0yqAQM6y0wcHt/o3s=
+github.com/sinlov-go/unittest-kit v1.2.1 h1:iI8jKiJOuyrPXTZuQHRwUzuuiqE5EUdS3brziFTkb3Y=
+github.com/sinlov-go/unittest-kit v1.2.1/go.mod h1:u/+OWj6Wm1mnfMRS8FhWjrg5aZ0yqAQM6y0wcHt/o3s=
 github.com/sirupsen/logrus v1.7.0/go.mod h1:yWOB1SBYBC5VeMP7gHvWumXLIWorT60ONWic61uBYv0=
 github.com/skeema/knownhosts v1.2.2 h1:Iug2P4fLmDw9f41PB6thxUkNUkJzB5i+1/exaj40L3A=
 github.com/skeema/knownhosts v1.2.2/go.mod h1:xYbVRSPxqBZFrdmDyMmsOs+uX1UZC3nTN3ThzgDxUwo=
