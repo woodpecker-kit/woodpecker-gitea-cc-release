@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.2.3](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.2.2...v1.2.3) (2024-09-29)
+
+### 👷‍ Build System
+
+* bump github.com/convention-change/convention-change-log ([569eef8e](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/569eef8efd745f17305d7800ef587a806e1cd1e6))
+
+* bump github.com/sinlov-go/unittest-kit from 1.1.1 to 1.2.1 ([b4232ce3](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/b4232ce34c03378d02fbe8ce6b30e2e28fd32ad0))
+
+* bump golang.org/x/crypto from 0.26.0 to 0.27.0 ([0061d310](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/0061d31097d83732fd168457d091cad7756b80b4))
+
+* bump github.com/sinlov-go/go-common-lib from 1.7.0 to 1.7.1 ([15780a67](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/15780a679b50d74cd8462a71ceb69cb56f6e0719))
+
+* bump github.com/convention-change/convention-change-log ([693c6c9f](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/693c6c9f197e74c382370b0e857e856ec08e3195))
+
+* bump github.com/Masterminds/semver/v3 from 3.2.1 to 3.3.0 ([00293a08](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/00293a0892ad0cb9fe545fa717277b05208894d4))
+
+* bump github.com/sinlov-go/unittest-kit from 1.1.0 to 1.1.1 ([c4f6b10f](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/c4f6b10f8c93d83c04bb0e4116e274e890e47b30))
+
+* bump github.com/urfave/cli/v2 from 2.27.3 to 2.27.4 ([a1a9ea39](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/a1a9ea3999c71064c8c3f8ecbebff8dc3c11ff17))
+
+* bump golang.org/x/crypto from 0.25.0 to 0.26.0 ([3a0fe562](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/3a0fe5622fab488f32c48d6ac2dc176eb93faf27))
+
+* change go version to 1.21.11 to check build and run ([a4895d44](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/a4895d44d6f46786f5159b53b13583d91f924733)), fix [#29](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/issues/29)
+
+* add auto-merge-dependabot.yml and let docker-buildx bake plugin fast ([dc4e18f3](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/dc4e18f35d128b61d0e972cd16444290248f4b24))
+
 ## [1.2.2](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.2.1...v1.2.2) (2024-04-23)
 
 ### 🐛 Bug Fixes

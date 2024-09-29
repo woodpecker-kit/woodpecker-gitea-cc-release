@@ -1,6 +1,6 @@
 {
   "name": "woodpecker-gitea-cc-release",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "template of golang cli tools, and can print basic env info",
   "directories": {
     "doc": "doc"
