@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.3.1](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.3.0...v1.3.1) (2024-12-21)
+
+### 📝 Documentation
+
+* update contributing guidelines and code of conduct ([28d26553](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/28d26553b3d07d60f6640e6018df23df55e23d73))
+
+### 👷‍ Build System
+
+* bump github.com/woodpecker-kit/woodpecker-tools ([409463a3](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/409463a33d7fd69b187081ac490cfd54151f905c))
+
+* bump github.com/sinlov-go/gitea-client-wrapper ([aa64c6a3](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/aa64c6a3fa0ab9747a3dfbce5dae0ba8d87d10bc))
+
+* update GitHub release action to v2 ([7b79390b](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/7b79390b995270ddf4b7d0c21471aa835831cafe))
+
 ## [1.3.0](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.2.3...v1.3.0) (2024-12-21)
 
 ### ✨ Features
