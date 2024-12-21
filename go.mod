@@ -13,12 +13,12 @@ require (
 	github.com/sinlov-go/unittest-kit v1.2.1
 	github.com/stretchr/testify v1.10.0
 	github.com/urfave/cli/v2 v2.27.5
-	github.com/woodpecker-kit/woodpecker-tools v1.20.0
+	github.com/woodpecker-kit/woodpecker-tools v1.21.0
 	golang.org/x/crypto v0.31.0
 )
 
 require (
-	dario.cat/mergo v1.0.0 // indirect
+	dario.cat/mergo v1.0.1 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/ProtonMail/go-crypto v1.0.0 // indirect
 	github.com/aymerick/raymond v2.0.2+incompatible // indirect
