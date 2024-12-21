@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.3.0](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.2.3...v1.3.0) (2024-12-21)
+
+### ✨ Features
+
+* bump golang.org/x/net from 0.23.0 to 0.33.0 ([1faa2816](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/1faa2816ffba47b11f6bb01590acebd6faeb74ae)), fix [#52](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/issues/52)
+
+### 👷‍ Build System
+
+* bump golang.org/x/crypto from 0.30.0 to 0.31.0 ([e4939503](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/e4939503676a4b31025d6d3ac6b2d3524692311e))
+
+* bump golang.org/x/crypto from 0.29.0 to 0.30.0 ([f894a7cf](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/f894a7cf8c57ba86ce547e3a0384d389d6472a55))
+
+* bump github.com/sinlov-go/gitea-client-wrapper ([9aabb616](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/9aabb6166736ea65449040e7723d2b4dd8b233e1))
+
+* bump github.com/Masterminds/semver/v3 from 3.3.0 to 3.3.1 ([357a7174](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/357a7174977914787383905a4ad48af3e74adbe3))
+
+* bump github.com/stretchr/testify from 1.9.0 to 1.10.0 ([6f33c76d](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/6f33c76d98831a7831c6d256cf361427882bd4a1))
+
+* bump golang.org/x/crypto from 0.28.0 to 0.29.0 ([ec0478ff](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/ec0478ff02c2a7d126e0b76e5f90b26a3851faa7))
+
+* bump github.com/convention-change/convention-change-log ([5464c249](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/5464c2492c206af039d34d027e2438ff563649be))
+
+* bump github.com/urfave/cli/v2 from 2.27.4 to 2.27.5 ([3aaf16dc](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/3aaf16dcf2dbae7b34b62f343a5efc3d115503e1))
+
+* bump golang.org/x/crypto from 0.27.0 to 0.28.0 ([492dec8f](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/492dec8f0184ae44f18231be75377ae12eece542))
+
 ## [1.2.3](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.2.2...v1.2.3) (2024-09-29)
 
 ### 👷‍ Build System
