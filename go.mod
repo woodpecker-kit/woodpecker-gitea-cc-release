@@ -3,7 +3,7 @@ module github.com/woodpecker-kit/woodpecker-gitea-cc-release
 go 1.21
 
 require (
-	code.gitea.io/sdk/gitea v0.19.0
+	code.gitea.io/sdk/gitea v0.20.0
 	github.com/Masterminds/semver/v3 v3.3.1
 	github.com/convention-change/convention-change-log v1.11.1
 	github.com/gookit/color v1.5.4
@@ -19,6 +19,7 @@ require (
 
 require (
 	dario.cat/mergo v1.0.1 // indirect
+	github.com/42wim/httpsig v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.1.3 // indirect
 	github.com/aymerick/raymond v2.0.2+incompatible // indirect
