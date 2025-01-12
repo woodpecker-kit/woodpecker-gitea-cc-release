@@ -89,8 +89,8 @@ github.com/sebdah/goldie/v2 v2.5.5 h1:rx1mwF95RxZ3/83sdS4Yp7t2C5TCokvWP4TBRbAyEW
 github.com/sebdah/goldie/v2 v2.5.5/go.mod h1:oZ9fp0+se1eapSRjfYbsV/0Hqhbuu3bJVvKI/NNtssI=
 github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 h1:n661drycOFuPLCN3Uc8sB6B/s6Z4t2xvBgU1htSHuq8=
 github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3/go.mod h1:A0bzQcvG0E7Rwjx0REVgAGH58e96+X0MeOfepqsbeW4=
-github.com/sinlov-go/gitea-client-wrapper v1.4.0 h1:6BXCkUnoPFfqhBrSxuJ1AgVtLVJEgUfW+HDD6Fresfw=
-github.com/sinlov-go/gitea-client-wrapper v1.4.0/go.mod h1:YdCgDtYoa+iCTpJB97iQBMu8uVm5/MUVTSd+XLtVi9U=
+github.com/sinlov-go/gitea-client-wrapper v1.4.1 h1:/6IUc3t9mF7FieovB2QTJ7nBVrgEPWXieQ0a4OcDRHA=
+github.com/sinlov-go/gitea-client-wrapper v1.4.1/go.mod h1:YdCgDtYoa+iCTpJB97iQBMu8uVm5/MUVTSd+XLtVi9U=
 github.com/sinlov-go/go-common-lib v1.7.1 h1:slVwwM/TiA7wzYYqRYMOHCOPmRLQn3NTU652fT2QWIE=
 github.com/sinlov-go/go-common-lib v1.7.1/go.mod h1:e+kY8eyLMnvayGezaWi3nU1VF5xsnMQ+DQUVdUC6Xbw=
 github.com/sinlov-go/go-git-tools v1.13.0 h1:ty+/9O9eTYMAUeYtZDtW/n2YjhkQhgSXDhxVRCI244g=
