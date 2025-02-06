@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.4.0](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.3.1...v1.4.0) (2025-02-06)
+
+### ✨ Features
+
+* update docker bake action to v6 and add build timeout ([b63dff16](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/b63dff160af5ce1ec11db6b8f1ab20bb6cb41766)), feat [#62](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/issues/62)
+
+### 👷‍ Build System
+
+* comment out zymosis installation and execution ([58ad728a](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/58ad728abe84bb3ec2b4641382275847db4dc14f))
+
+* pin zymosis version to v1.1.3 ([3e44e6f8](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/3e44e6f844bd2303bdd10a64b8beebd0109e403e))
+
+* bump github.com/woodpecker-kit/woodpecker-tools ([6d31cb75](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/6d31cb7550396f9addb6dadbf66a8fef9a082840))
+
+* bump github.com/sinlov-go/gitea-client-wrapper ([19e8d2ad](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/19e8d2ad5d66206de610977c99bb42f8f02c068d))
+
+* bump code.gitea.io/sdk/gitea from 0.19.0 to 0.20.0 ([8cdf0384](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/8cdf038460f0998f6dd67e6312e620eb67645a52))
+
+* bump golang.org/x/crypto from 0.31.0 to 0.32.0 ([ee90f298](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/ee90f29816885460b75d43dc5dcc6050d8a24ccc))
+
+* update dependencies go-git has an Argument Injection via the URL field ([bc4e8898](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/commit/bc4e8898e35f64b2be5cd9b785f10ee4606d3fe0)), fix [#56](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/issues/56)
+
 ## [1.3.1](https://github.com/woodpecker-kit/woodpecker-gitea-cc-release/compare/1.3.0...v1.3.1) (2024-12-21)
 
 ### 📝 Documentation
