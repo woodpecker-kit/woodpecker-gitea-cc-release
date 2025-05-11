@@ -1,12 +1,13 @@
 module github.com/woodpecker-kit/woodpecker-gitea-cc-release
 
-go 1.21
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
 	code.gitea.io/sdk/gitea v0.21.0
 	github.com/Masterminds/semver/v3 v3.3.1
-	github.com/convention-change/convention-change-log v1.13.1
+	github.com/convention-change/convention-change-log v1.13.2
 	github.com/gookit/color v1.5.4
 	github.com/joho/godotenv v1.5.1
 	github.com/sinlov-go/gitea-client-wrapper v1.4.1
@@ -15,7 +16,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	github.com/urfave/cli/v2 v2.27.6
 	github.com/woodpecker-kit/woodpecker-tools v1.23.0
-	golang.org/x/crypto v0.37.0
+	golang.org/x/crypto v0.38.0
 )
 
 require (
@@ -45,14 +46,14 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
-	github.com/sinlov-go/go-git-tools v1.13.0 // indirect
+	github.com/sinlov-go/go-git-tools v1.14.0 // indirect
 	github.com/sinlov-go/sample-markdown v1.4.0 // indirect
 	github.com/skeema/knownhosts v1.3.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
-	golang.org/x/net v0.39.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/net v0.40.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
