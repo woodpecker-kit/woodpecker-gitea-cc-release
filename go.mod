@@ -1,6 +1,7 @@
 module github.com/woodpecker-kit/woodpecker-gitea-cc-release
 
-go 1.21
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
@@ -15,7 +16,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	github.com/urfave/cli/v2 v2.27.6
 	github.com/woodpecker-kit/woodpecker-tools v1.23.0
-	golang.org/x/crypto v0.37.0
+	golang.org/x/crypto v0.38.0
 )
 
 require (
@@ -52,7 +53,7 @@ require (
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	golang.org/x/net v0.39.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
