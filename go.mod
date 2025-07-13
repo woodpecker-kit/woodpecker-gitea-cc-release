@@ -14,7 +14,7 @@ require (
 	github.com/sinlov-go/go-common-lib v1.9.0
 	github.com/sinlov-go/unittest-kit v1.2.1
 	github.com/stretchr/testify v1.10.0
-	github.com/urfave/cli/v2 v2.27.6
+	github.com/urfave/cli/v2 v2.27.7
 	github.com/woodpecker-kit/woodpecker-tools v1.23.0
 	golang.org/x/crypto v0.40.0
 )
@@ -28,7 +28,7 @@ require (
 	github.com/bar-counter/slog v1.4.1 // indirect
 	github.com/chainguard-dev/git-urls v1.0.2 // indirect
 	github.com/cloudflare/circl v1.6.1 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/davidmz/go-pageant v1.0.2 // indirect
