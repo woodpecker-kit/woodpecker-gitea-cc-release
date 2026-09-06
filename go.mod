@@ -1,6 +1,6 @@
 module github.com/woodpecker-kit/woodpecker-gitea-cc-release
 
-go 1.26
+go 1.26.0
 
 require (
 	code.gitea.io/sdk/gitea v0.25.1
@@ -14,7 +14,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	github.com/urfave/cli/v2 v2.27.7
 	github.com/woodpecker-kit/woodpecker-tools v1.23.0
-	golang.org/x/crypto v0.55.0
+	golang.org/x/crypto v0.56.0
 )
 
 require (
