@@ -6,7 +6,7 @@ require (
 	code.gitea.io/sdk/gitea v0.25.1
 	github.com/Masterminds/semver/v3 v3.5.0
 	github.com/convention-change/convention-change-log v1.14.0
-	github.com/gookit/color v1.6.1
+	github.com/gookit/color v1.6.2
 	github.com/joho/godotenv v1.5.1
 	github.com/sinlov-go/gitea-client-wrapper v1.4.1
 	github.com/sinlov-go/go-common-lib v1.9.0
